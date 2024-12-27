@@ -6,7 +6,7 @@
 
 * Keyboard Maintainer: [Mark Hooijberg](https://github.com/MHooijberg)
 * Hardware Supported: *The PCBs, controllers supported*
-* Hardware Availability: *Links to where you can find this hardware*
+* Hardware Availability: [Official Website Store Page](https://meletrix.com/collections/zoom75-collection)
 
 Make example for this keyboard (after setting up your build environment):
 
@@ -23,5 +23,6 @@ See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_to
 Enter the bootloader in 3 ways:
 
 * **Bootmagic reset**: Hold down the key at (0,0) in the matrix (usually the top left key or Escape) and plug in the keyboard
-* **Physical reset button**: Briefly press the button on the back of the PCB - some may have pads you must short instead
+* **Default firmware**: The default firmware can be put in DFU mode by using the 'switch to DFU' in the official flashing program provided by Meletrix.
 * **Keycode in layout**: Press the key mapped to `QK_BOOT` if it is available
+* **Physical reset button**: Hold the reset-button on the back of the PCB while plugging in the USB cable.
