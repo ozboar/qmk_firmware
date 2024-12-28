@@ -10,17 +10,16 @@
   - Auto-resume last connected device
   - Low power sleep timer
 - Enabled all 40+ lighting modes
-- Enabled 5 total bluetooth profiles
-- Increased LED brightness
-- Screen module keybinds
-- Rotary encoder support
-- No battery light when wired-only (switch under right shift)
+- Enabled all 5 bluetooth profiles
+- Increased LED brightness (safe levels for regular and taillight editions) 
+- Screen module support
+- Onekey module support
+- Rotary encoder module support (with proper resolution)
+- No battery indicator lights when wired-only (switch under right shift)
 
 ## Known Issues / Caveats
 
-- Screen module does not receive commands from software (zoom-sync/meletrix id)
 - Missing flashing device indicator lights when searching/pairing
-- Missing onekey module support ( if you have an extra onekey, let me know! )
 
 ## Installation Instructions
 
