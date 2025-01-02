@@ -26,8 +26,8 @@
     "url": "https://meletrix.com/collections/zoom75-collection",
     "usb": {
         "device_version": "1.0.0",
-        "pid": "0xDF11",
-        "vid": "0x2C3E"
+        "vid": "0x806D",
+        "pid": "0x0006"
     },
     "layouts": {
         "LAYOUT": {
