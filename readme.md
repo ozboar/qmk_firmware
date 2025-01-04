@@ -23,7 +23,7 @@
 
 ## Installation Instructions
 
-1. [Build from source](keyboards/meletrix/zoom65_v3) or download the jailbroken firmware from [the releases page](https://github.com/ozwaldorf/qmk_firmware/releases/latest) for your pcb revision (ANSI-only or ISO-ANSI) and your case (taillight or not)
+1. [Build from source](keyboards/meletrix/zoom65_v3) or download the jailbroken firmware from [the releases page](https://github.com/ozboar/qmk_firmware/releases/latest) for your pcb revision (ANSI-only or ISO-ANSI) and your case (taillight or not)
 2. Hold down ESC and plug keyboard in to enter DFU boot mode
 3. Flash jailbroken firmware with qmk cli (Linux, Windows, Mac) or qmk toolbox (Windows, Mac)
 4. Import via json sideload in the design tab of https://usevia.app
