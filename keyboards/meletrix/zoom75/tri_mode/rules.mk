@@ -1,1 +1,1 @@
-SRC += matrix.c
+MCU_LDSCRIPT = AT32F415xC
