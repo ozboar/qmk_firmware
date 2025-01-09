@@ -38,5 +38,6 @@
 #define AT32_USBDIV                         AT32_USBDIV_DIV3
 
 // Setup definitions for the SPI driver.
-#undef STM32_SPI_USE_SPI2
+#undef AT32_SPI_USE_SPI2
 #define STM32_SPI_USE_SPI2 TRUE
+#define SPI_SELECT_MODE SPI_SELECT_MODE_NONE
