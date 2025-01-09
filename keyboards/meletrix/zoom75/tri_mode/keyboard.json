@@ -32,7 +32,7 @@
     "debounce": 5,
     "diode_direction": "COL2ROW",
     "eeprom": {
-        "driver": "vendor",
+        "driver": "wear_leveling",
         "wear_leveling": {
             "driver": "spi_flash"
         }
