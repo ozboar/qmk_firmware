@@ -6,6 +6,10 @@
 #undef AT32_HEXTCLK
 #define AT32_HEXTCLK 16000000
 
+// Encoder configuration
+#undef ENCODER_MAP_KEY_DELAY
+#define ENCODER_MAP_KEY_DELAY 10
+
 // External Flash Configuration.
 #define EXTERNAL_FLASH_ADDRESS_SIZE 3
 #define EXTERNAL_FLASH_BLOCK_SIZE 65536
@@ -13,6 +17,7 @@
 #define EXTERNAL_FLASH_SECTOR_SIZE 4096
 #define EXTERNAL_FLASH_SIZE 524288
 #define EXTERNAL_FLASH_SPI_CLOCK_DIVISOR 4
+#define EXTERNAL_FLASH_SPI_SLAVE_SELECT_PIN
 
 // Define SPI config for AT32F415 Implementation.
 #define SPI_CS_PIN   B12
