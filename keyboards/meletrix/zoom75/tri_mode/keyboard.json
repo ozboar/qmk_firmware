@@ -31,18 +31,13 @@
     },
     "debounce": 5,
     "diode_direction": "COL2ROW",
-    "eeprom": {
-        "driver": "wear_leveling",
-        "wear_leveling": {
-            "driver": "spi_flash"
-        }
-    },
+
     "encoder": {
         "rotary": [
             {
                 "pin_a": "C10",
                 "pin_b": "C11",
-                "resolution": 4
+                "resolution": 2
             }
         ]
     },
@@ -72,7 +67,7 @@
                 {"h": 1, "label": "F11",         "matrix": [0, 11],  "w": 1,     "x": 11.75,  "y": 0},
                 {"h": 1, "label": "F12",         "matrix": [0, 12],  "w": 1,     "x": 12.75,  "y": 0},
                 {"h": 1, "label": "F13",         "matrix": [0, 13],  "w": 1,     "x": 14,     "y": 0},
-                {"h": 1, "label": "Encoder",     "matrix": [0, 14],  "w": 1,     "x": 15,     "y": 0},
+                {"h": 1, "label": "Encoder",     "matrix": [4, 14],  "w": 1,     "x": 15,     "y": 0},
 
                 {"h": 1, "label": "~",           "matrix": [1, 0],   "w": 1,     "x": 0,      "y": 1.25},
                 {"h": 1, "label": "1",           "matrix": [1, 1],   "w": 1,     "x": 1,      "y": 1.25},
@@ -88,6 +83,7 @@
                 {"h": 1, "label": "-",           "matrix": [1, 11],  "w": 1,     "x": 11,     "y": 1.25},
                 {"h": 1, "label": "=",           "matrix": [1, 12],  "w": 1,     "x": 12,     "y": 1.25},
                 {"h": 1, "label": "Backspace",   "matrix": [1, 13],  "w": 2,     "x": 13,     "y": 1.25},
+                {"h": 1, "label": "Backspace1",  "matrix": [3, 13],  "w": 1,     "x": 14,     "y": 1.25},
                 {"h": 1, "label": "Delete",      "matrix": [1, 14],  "w": 1,     "x": 15,     "y": 1.25},
 
                 {"h": 1, "label": "Tab",         "matrix": [2, 0],   "w": 1.5,   "x": 0,      "y": 2.25},
@@ -119,7 +115,6 @@
                 {"h": 1, "label": ";",           "matrix": [3, 10],  "w": 1,     "x": 10.75,  "y": 3.25},
                 {"h": 1, "label": "'",           "matrix": [3, 11],  "w": 1,     "x": 11.75,  "y": 3.25},
                 {"h": 1, "label": "Enter",       "matrix": [3, 12],  "w": 2.25,  "x": 12.75,  "y": 3.25},
-                {"h": 1, "label": "Backspace1",  "matrix": [3, 13],  "w": 1,     "x": 14,     "y": 1.25},
                 {"h": 1, "label": "PageDown",    "matrix": [3, 14],  "w": 1,     "x": 15,     "y": 3.25},
 
                 {"h": 1, "label": "Left Shift1", "matrix": [4, 0],   "w": 2.25,  "x": 0,      "y": 4.25},
@@ -139,11 +134,11 @@
 
                 {"h": 1, "label": "Ctrl",        "matrix": [5, 0],   "w": 1.25,  "x": 0,      "y": 5.25},
                 {"h": 1, "label": "Win",         "matrix": [5, 1],   "w": 1.25,  "x": 1.25,   "y": 5.25},
-                {"h": 1, "label": "Alt",         "matrix": [5, 2],   "w": 1.25,  "x": 2.5,    "y": 5.25},
+                {"h": 1, "label": "Left Alt",    "matrix": [5, 2],   "w": 1.25,  "x": 2.5,    "y": 5.25},
                 {"h": 1, "label": "Space",       "matrix": [5, 3],   "w": 2.25,  "x": 3.75,   "y": 5.25},
                 {"h": 1, "label": "Space",       "matrix": [5, 6],   "w": 1.25,  "x": 6,      "y": 5.25},
                 {"h": 1, "label": "Space",       "matrix": [5, 7],   "w": 2.75,  "x": 7.25,   "y": 5.25},
-                {"h": 1, "label": "Alt",         "matrix": [5, 10],  "w": 1.25,  "x": 10,     "y": 5.25},
+                {"h": 1, "label": "Right Alt",   "matrix": [5, 10],  "w": 1.25,  "x": 10,     "y": 5.25},
                 {"h": 1, "label": "Fn",          "matrix": [5, 11],  "w": 1.25,  "x": 11.25,  "y": 5.25},
                 {"h": 1, "label": "\u2190",      "matrix": [5, 12],  "w": 1,     "x": 13,     "y": 5.25},
                 {"h": 1, "label": "\u2193",      "matrix": [5, 13],  "w": 1,     "x": 14,     "y": 5.25},
