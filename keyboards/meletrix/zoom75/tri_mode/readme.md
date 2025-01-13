@@ -80,7 +80,7 @@ The first time you load this page it should look like the image below:
 
 ![Operation configuration page 1](docs/isp_programmer-page_4_1.png)
 
-First select 'Download to device', to set the operation to flash firmware to the MCU, next add the firmware **meletrix_zoom75_tri_mode_*.bin** file by clicking on add and selecting it (Note: the .hex file can be used but is not tested so it is **not recommend**). After you select it it will ask for the 'Download Begin Address (0x)'. This is the memory address where the firmware will start, and should be set to 0x08000000, the dialog will display '08000000'.
+First select 'Download to device', to set the operation to flash firmware to the MCU, next add the firmware **meletrix_zoom75_tri_mode_*.bin** file by clicking on add and selecting it (Note: the .hex file can be used but is not tested so it is **not recommend**). After you select it it will ask for the 'Download Begin Address (0x)'. This is the memory address where the firmware will start, and should be set to 0x08000000, the dialog will display '08000000'. In the case that there's a file already in the list, delete it first and then add it again to ensure its the latest file.
 
 ![Operation configuration page 2](docs/isp_programmer-page_4_2.png)
 
