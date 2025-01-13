@@ -30,10 +30,11 @@ The firmware aims to add more customization ontop of the stock firmware. To achi
 - [X] Detected as a USB device.
 - [ ] Feature support: External EEPROM storage.
 - [ ] Feature support: Extra RGB animations.
-- [ ] Feature support: Full wireless functions, and additions (extra profiles etc.)
+- [X] Feature support: Full QMK Support and (most) features.
+- [ ] Feature support: Full wireless functions, and additions (extra profiles etc.).
 - [ ] Feature support: Implement stock custom keycodes.
 - [ ] Feature support: Working RGB Matrix.
-- [X] Full QMK Support and (most) features.
+- [ ] Keymap support: Default - MacOS layout.
 - [X] Layout support: ANSI.
 - [X] Layout support: Backspace - Split.
 - [X] Layout support: ISO.
