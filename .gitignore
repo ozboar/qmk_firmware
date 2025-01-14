@@ -120,4 +120,4 @@ compile_commands.json
 via*.json
 /keyboards/**/keymaps/via/*
 /keyboards/**/keymaps/vial/*
-!/keyboards/meletrix/**/via*.json
+!/keyboards/meletrix/zoom75/tri_mode/**/*

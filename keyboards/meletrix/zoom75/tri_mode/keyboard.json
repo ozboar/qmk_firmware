@@ -267,7 +267,7 @@
         "toggle": 5
     },
     "usb": {
-        "device_version": "1.0.0",
+        "device_version": "2.0.0",
         "force_nkro": true,
         "max_power": 500,
         "no_startup_check": false,
