@@ -2,10 +2,11 @@
     "name": "Meletrix - Zoom75 Tri-Mode Custom Firmware",
     "vendorId": "0x1EA7",
     "productId": "0xCED3",
-    "matrix": {
-        "rows": 6,
-        "cols": 15
-    },
+    "customKeycodes": [
+        {"name": "LCD TOGG", "title": "Lcd toggle", "shortName": "LCD_TG"},
+        {"name": "LCD mode+", "title": "Next lcd mode ", "shortName": "LCD_MI"},
+        {"name": "LCD mode-", "title": "Previous lcd mode ", "shortName": "LCD_MD"}
+    ],
     "layouts": {
         "keymap": [
             [
@@ -223,5 +224,9 @@
             ["Bottom Row", "6.25U", "7U", "Split Space"],
             ["Module Type", "Knob", "Extra keys", "LCD / Badge"]
         ]
+    },
+    "matrix": {
+        "rows": 6,
+        "cols": 15
     }
 }
