@@ -20,6 +20,7 @@
 ## Known Issues / Caveats
 
 - Missing flashing device indicator lights when searching/pairing
+- Screen does not (pseudo) turn off when the keyboard sleeps
 
 ## Installation Instructions
 
