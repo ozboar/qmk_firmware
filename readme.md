@@ -9,6 +9,7 @@
   - Full support for USB, Bluetooth and 2.4Ghz
   - Auto-resume last connected device
   - Low power sleep timer
+- Utilizes QMK magic codes for Gui toggle (fn+gui), and Alt-Gui swap (fn+lalt, aka "mac" layout)
 - Enabled all 40+ lighting modes
 - Enabled all 5 bluetooth profiles
 - Increased LED brightness (safe levels for regular and taillight editions) 
