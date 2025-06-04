@@ -7,8 +7,8 @@
 #define AT32_HEXTCLK 16000000
 
 // Encoder configuration
-#undef ENCODER_MAP_KEY_DELAY
-#define ENCODER_MAP_KEY_DELAY 10
+// #undef ENCODER_MAP_KEY_DELAY
+// #define ENCODER_MAP_KEY_DELAY 10
 
 // External Flash Configuration.
 // #define EXTERNAL_FLASH_ADDRESS_SIZE 3
