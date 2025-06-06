@@ -123,3 +123,5 @@ via*.json
 !/keyboards/meletrix/**/via*.json
 !/keyboards/meletrix/**/keymaps/via/*
 !/keyboards/meletrix/**/keymaps/vial/*
+
+!**/docs/**

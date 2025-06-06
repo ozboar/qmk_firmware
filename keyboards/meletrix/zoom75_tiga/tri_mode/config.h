@@ -16,15 +16,14 @@
 // #define EXTERNAL_FLASH_PAGE_SIZE 256
 // #define EXTERNAL_FLASH_SECTOR_SIZE 4096
 // #define EXTERNAL_FLASH_SIZE 524288
-// #define EXTERNAL_FLASH_SPI_CLOCK_DIVISOR 4
-// #define EXTERNAL_FLASH_SPI_SLAVE_SELECT_PIN
+#define EXTERNAL_FLASH_SPI_CLOCK_DIVISOR 4
+#define EXTERNAL_FLASH_SPI_SLAVE_SELECT_PIN B12
 
 // Define SPI config for AT32F415 Implementation.
-// #define SPI_CS_PIN   B12
-// #define SPI_DRIVER SPID2
-// #define SPI_MISO_PIN B14
-// #define SPI_MOSI_PIN B15
-// #define SPI_SCLK_PIN B13
+#define SPI_DRIVER SPID2
+#define SPI_MISO_PIN B14
+#define SPI_MOSI_PIN B15
+#define SPI_SCLK_PIN B13
 
 // Wear leveling configuration.
 // #define WEAR_LEVELING_EXTERNAL_FLASH_BLOCK_COUNT	1
@@ -32,3 +31,13 @@
 // #define WEAR_LEVELING_LOGICAL_SIZE	32768
 // #define WEAR_LEVELING_BACKING_SIZE	65536
 // #define BACKING_STORE_WRITE_SIZE
+
+// Following was from HorrorTroll's project.
+// Wear-leveling SPI EEPROM Driver
+// #define SPI_DRIVER SPID2
+// #define SPI_SCK_PIN B13
+// #define SPI_MOSI_PIN B15
+// #define SPI_MISO_PIN B14
+
+// #define EXTERNAL_FLASH_SPI_SLAVE_SELECT_PIN B12
+// #define EXTERNAL_FLASH_CLOCK_DIVISOR 4
