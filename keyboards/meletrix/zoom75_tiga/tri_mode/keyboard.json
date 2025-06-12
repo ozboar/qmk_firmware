@@ -111,7 +111,7 @@
     "maintainer": "MHooijberg",
     "bootloader": "at32-dfu",
     "bootmagic": {
-        "enabled": true,
+        "enabled": false,
         "matrix": [0, 0]
     },
     "build": {
@@ -128,11 +128,11 @@
         ]
     },
     "features": {
-        "bootmagic": true,
+        "bootmagic": false,
         "command": false,
         "console": false,
         "encoder": false,
-        "extrakey": true,
+        "extrakey": false,
         "mousekey": false,
         "nkro": true
     },
