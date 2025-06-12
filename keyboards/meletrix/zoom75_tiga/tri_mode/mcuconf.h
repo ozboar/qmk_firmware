@@ -38,8 +38,3 @@
 #define AT32_PVM_ENABLE                     FALSE
 #define AT32_PWM_USE_TMR5 TRUE
 #define AT32_USBDIV                         AT32_USBDIV_DIV3
-
-// Setup definitions for the SPI driver, for the external NOR Flash.
-// #undef AT32_SPI_USE_SPI2
-// #define STM32_SPI_USE_SPI2 TRUE
-// #define SPI_SELECT_MODE SPI_SELECT_MODE_NONE
