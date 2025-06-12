@@ -1,13 +1,46 @@
 {
+    "ws2812": {
+        "pin": "A1",
+        "driver": "pwm"
+    },
+    "rgb_matrix": {
+        "driver": "ws2812",
+        "led_count": 1,
+        "animations": {
+            "cycle_left_right": true,
+            "solid_color": true
+        },
+        "default": {
+            "animation": "cycle_left_right",
+            "on": true
+        }
+    },
     "manufacturer": "MHooijberg",
     "keyboard_name": "meletrix/zoom75_tiga/tri_mode",
     "maintainer": "MHooijberg",
     "bootloader": "at32-dfu",
+    "bootmagic": {
+        "enabled": true,
+        "matrix": [0, 0]
+    },
+    "build": {
+        "debounce_type": "sym_defer_g",
+        "firmware_format": "bin"
+    },
     "diode_direction": "COL2ROW",
+    "encoder": {
+        "rotary": [
+            {
+                "pin_a": "C10",
+                "pin_b": "C11"
+            }
+        ]
+    },
     "features": {
         "bootmagic": true,
         "command": true,
         "console": true,
+        "encoder": true,
         "extrakey": true,
         "mousekey": true,
         "nkro": true
@@ -40,7 +73,6 @@
                 {"h": 1, "label": "F11",         "matrix": [0, 11],  "w": 1,     "x": 11.75,  "y": 0},
                 {"h": 1, "label": "F12",         "matrix": [0, 12],  "w": 1,     "x": 12.75,  "y": 0},
                 {"h": 1, "label": "F13",         "matrix": [0, 13],  "w": 1,     "x": 14,     "y": 0},
-                {"h": 1, "label": "Encoder",     "matrix": [4, 14],  "w": 1,     "x": 15,     "y": 0},
 
                 {"h": 1, "label": "~",           "matrix": [1, 0],   "w": 1,     "x": 0,      "y": 1.25},
                 {"h": 1, "label": "1",           "matrix": [1, 1],   "w": 1,     "x": 1,      "y": 1.25},
@@ -109,6 +141,7 @@
                 {"h": 1, "label": "Win",         "matrix": [5, 1],   "w": 1.25,  "x": 1.25,   "y": 5.25},
                 {"h": 1, "label": "Left Alt",    "matrix": [5, 2],   "w": 1.25,  "x": 2.5,    "y": 5.25},
                 {"h": 1, "label": "Space",       "matrix": [5, 3],   "w": 2.25,  "x": 3.75,   "y": 5.25},
+                {"h": 1, "label": "Space",       "matrix": [5, 4],   "w": 2.25,  "x": 3.75,   "y": 5.25},
                 {"h": 1, "label": "Space",       "matrix": [5, 6],   "w": 1.25,  "x": 6,      "y": 5.25},
                 {"h": 1, "label": "Space",       "matrix": [5, 7],   "w": 2.75,  "x": 7.25,   "y": 5.25},
                 {"h": 1, "label": "Right Alt",   "matrix": [5, 10],  "w": 1.25,  "x": 10,     "y": 5.25},

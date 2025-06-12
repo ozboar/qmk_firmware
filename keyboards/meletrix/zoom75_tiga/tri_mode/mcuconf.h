@@ -20,6 +20,7 @@
 #undef AT32_PLLMULT_VALUE
 #undef AT32_PLLRCS
 #undef AT32_PVM_ENABLE
+#undef AT32_PWM_USE_TMR5
 #undef AT32_USBDIV
 
 // Define new settings.
@@ -35,6 +36,7 @@
 #define AT32_PLLMULT_VALUE                  18
 #define AT32_PLLRCS                         AT32_PLLRCS_HEXT
 #define AT32_PVM_ENABLE                     FALSE
+#define AT32_PWM_USE_TMR5 TRUE
 #define AT32_USBDIV                         AT32_USBDIV_DIV3
 
 // Setup definitions for the SPI driver, for the external NOR Flash.
