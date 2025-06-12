@@ -6,11 +6,10 @@
     "rgb_matrix": {
         "driver": "ws2812",
         "animations": {
-            "cycle_left_right": true,
             "solid_color": true
         },
         "default": {
-            "animation": "cycle_left_right",
+            "animation": "solid_color",
             "on": true
         },
         "layout": [
@@ -130,11 +129,11 @@
     },
     "features": {
         "bootmagic": true,
-        "command": true,
-        "console": true,
-        "encoder": true,
+        "command": false,
+        "console": false,
+        "encoder": false,
         "extrakey": true,
-        "mousekey": true,
+        "mousekey": false,
         "nkro": true
     },
     "matrix_pins": {
@@ -148,7 +147,7 @@
         "pid": "0xCED4",
         "vid": "0x1EA7"
     },
-        "layouts": {
+    "layouts": {
         "LAYOUT": {
             "layout": [
                 {"h": 1, "label": "Esc",          "matrix": [0, 0],   "w": 1,     "x": 0,      "y": 0},
