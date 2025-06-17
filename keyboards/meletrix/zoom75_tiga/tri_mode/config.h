@@ -22,6 +22,9 @@
 #define WS2812_T1H 850
 #define WS2812_T0H 250
 #define WS2812_TRST_US 80000
+
+// #define ENABLE_RGB_MATRIX_HUE_WAVE
+
 // #define WS2812_LED_COUNT 85
 // #define WS2812_BYTE_ORDER RGB
 // #define WS2812_RGBW
