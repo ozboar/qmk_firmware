@@ -16,15 +16,34 @@
             "solid_color"              : true
         }
     },
-
+    "manufacturer": "Meletrix",
+    "keyboard_name": "meletrix/zoom75_tiga/tri_mode",
+    "maintainer": "MHooijberg",
+    "bootloader": "at32-dfu",
+    "build": {
+        "debounce_type": "sym_defer_g",
+        "firmware_format": "bin"
+    },
+    "bootmagic": {
+        "enabled": true,
+        "matrix": [0, 0]
+    },
     "diode_direction": "COL2ROW",
+    "encoder": {
+        "rotary": [
+            {
+                "pin_a": "C10",
+                "pin_b": "C11"
+            }
+        ]
+    },
     "features": {
-        "bootmagic": false,
-        "command": false,
-        "console": false,
-        "encoder": false,
-        "extrakey": false,
-        "mousekey": false,
+        "bootmagic": true,
+        "command": true,
+        "console": true,
+        "encoder": true,
+        "extrakey": true,
+        "mousekey": true,
         "nkro": true
     },
     "matrix_pins": {
