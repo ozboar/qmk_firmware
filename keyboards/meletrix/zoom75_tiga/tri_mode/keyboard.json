@@ -16,14 +16,7 @@
             "solid_color"              : true
         }
     },
-    "manufacturer": "MHooijberg",
-    "keyboard_name": "meletrix/zoom75_tiga/tri_mode",
-    "maintainer": "MHooijberg",
-    "bootloader": "at32-dfu",
-    "build": {
-        "debounce_type": "sym_defer_g",
-        "firmware_format": "bin"
-    },
+
     "diode_direction": "COL2ROW",
     "features": {
         "bootmagic": false,
