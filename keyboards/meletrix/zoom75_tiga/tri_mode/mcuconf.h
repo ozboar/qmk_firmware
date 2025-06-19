@@ -1,9 +1,6 @@
 // Copyright 2024 MHooijberg <https://github.com/MHooijberg>
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-// The following settings are needed to configure,
-// the 16MHz external clock.
-
 #pragma once
 #include_next <mcuconf.h>
 
@@ -23,7 +20,8 @@
 #undef AT32_PWM_USE_TMR5
 #undef AT32_USBDIV
 
-// Define new settings.
+// Define new settings, these settings are responsible for defining the external crystal clock, and dividers.
+// It also defines the alternative functions of some pins.
 #define AT32_ADCDIV                         AT32_ADCDIV_DIV4
 #define AT32_AHBDIV                         AT32_AHBDIV_DIV1
 #define AT32_APB1DIV                        AT32_APB1DIV_DIV2

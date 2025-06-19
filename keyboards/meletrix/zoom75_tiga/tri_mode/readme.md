@@ -1,6 +1,6 @@
 # meletrix/zoom75_tiga/tri_mode
 [![Productpage](https://img.shields.io/badge/Official_product_page-_?style=flat&logoSize=auto&color=%23c3a372
-)](https://meletrix.com/products/zoom75-collection)
+)](https://meletrix.com/collections/zoom75-tiga)
 [![The Meletrix Discord](https://img.shields.io/badge/Join%20the%20discussion!-_?style=flat&logo=discord&logoColor=%23fff&logoSize=auto&color=%235865F2
 )](https://discord.gg/ZbMfz88Vhu)
 <!-- [![MIT License](https://img.shields.io/badge/License-MIT_License-yellow)](https://github.com/MHooijberg/Zoom75-Wireless-Firmware/blob/main/LICENSE) -->
@@ -16,7 +16,7 @@ The goal of this project is to create highly-customisable open-source firmware f
 
 QMK CLI example for this keyboard (after setting up your build environment):
 
-    qmk compile -kb meletrix/zoom75/tri_mode -km default
+    qmk compile -kb meletrix/zoom75_tiga/tri_mode -km default
 
 Make example for this keyboard (after setting up your build environment):
 
