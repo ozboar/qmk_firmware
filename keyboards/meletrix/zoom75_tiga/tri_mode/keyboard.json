@@ -15,24 +15,11 @@
     "_comment_5": "========================================",
 
     "bootloader": "at32-dfu",
-    "bootmagic": {
-        "enabled": true,
-        "matrix": [ 0, 0 ]
-    },
+
     "build": {
         "debounce_type": "sym_defer_g",
         "firmware_format": "hex",
         "lto": false
-    },
-    "caps_word": {
-        "both_shifts_turns_on": false,
-        "double_tap_shift_turns_on": false,
-        "enabled": false,
-        "idle_timeout": 5000,
-        "invert_on_shift": false
-    },
-    "combo": {
-        "term": 50
     },
     "debounce": 5,
     "diode_direction": "COL2ROW",
@@ -45,20 +32,8 @@
             }
         ]
     },
-    "features": {
-        "bootmagic": true,
-        "command": true,
-        "console": true,
-        "encoder": true,
-        "extrakey": true,
-        "mousekey": true,
-        "nkro": true
-    },
-    "host": {
-        "default": {
-            "nkro": false
-        }
-    },
+
+
     "layouts": {
         "LAYOUT": {
             "layout": [
@@ -1011,11 +986,7 @@
             ]
         }
     },
-    "leader_key": {
-        "timing": false,
-        "strict_processing": false,
-        "timeout": 300
-    },
+
     "matrix_pins": {
         "cols": [ "F6", "F7", "C12", "D2", "B3", "B4", "B5", "B8", "B9", "C13", "C14", "C15", "C0", "B11", "C1" ],
         "custom": false,
@@ -1025,27 +996,9 @@
         "io_delay": 30,
         "rows": [ "A15", "C9", "B1", "B0", "C5", "C4" ]
     },
-    "mouse_key": {
-        "delay": 150,
-        "enabled": false,
-        "interval": 16,
-        "max_speed": 32,
-        "time_to_max": 32,
-        "wheel_delay": 10
-    },
-    "oneshot": {
-        "tap_toggle": 5,
-        "timeout": 5000
-    },
+
     "processor": "AT32F415",
-    "qmk": {
-        "locking": {
-            "enabled": false,
-            "resync": false
-        },
-        "tap_capslock_delay": 80,
-        "tap_keycode_delay": 0
-    },
+
     "rgb_matrix": {
         "animations": {
             "none": true,
@@ -1121,28 +1074,7 @@
         "timeout": 3000,
         "val_steps": 16
     },
-    "secure": {
-        "enabled": false,
-        "idle_timeout": 60000, // 60 seconds.
-        "unlock_sequence": [[0, 0], [0, 1], [4, 3]], // Escape, F1, X.
-        "unlock_timeout": 5000 // 5 seconds.
-    },
-    "stenography": {
-        "enabled": false,
-        "protocol": "all"
-    },
-    "tapping": {
-        "chordal_hold": false,
-        "hold_on_other_key_press": false,
-        "hold_on_other_key_press_per_key": false,
-        "permissive_hold": false,
-        "permissive_hold_per_key": false,
-        "retro": false,
-        "retro_per_key": false,
-        "term": 200,
-        "term_per_key": false,
-        "toggle": 5
-    },
+
     "usb": {
         "device_version": "1.0.0",
         "pid": "0xCED4",
