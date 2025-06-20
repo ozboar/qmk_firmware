@@ -1,7 +1,7 @@
 {
-    "_comment_0": "==================================",
-    "_comment_1": "=        General Metadata        =",
-    "_comment_2": "==================================",
+    "_comment_0": "========================================",
+    "_comment_1": "=           General Metadata           =",
+    "_comment_2": "========================================",
 
     "bootloader_instructions": "To enter bootloader mode, on stock firmware, hold the 'Space' and 'B' keys, while plugging in the keyboard. On custom firmware, use the 'ESC' key.",
     "keyboard_name": "meletrix/zoom75_tiga/tri_mode",
@@ -15,7 +15,6 @@
     "_comment_5": "========================================",
 
     "bootloader": "at32-dfu",
-
     "build": {
         "debounce_type": "sym_defer_g",
         "firmware_format": "hex",
@@ -32,8 +31,6 @@
             }
         ]
     },
-
-
     "layouts": {
         "LAYOUT": {
             "layout": [
@@ -986,7 +983,6 @@
             ]
         }
     },
-
     "matrix_pins": {
         "cols": [ "F6", "F7", "C12", "D2", "B3", "B4", "B5", "B8", "B9", "C13", "C14", "C15", "C0", "B11", "C1" ],
         "custom": false,
@@ -996,9 +992,7 @@
         "io_delay": 30,
         "rows": [ "A15", "C9", "B1", "B0", "C5", "C4" ]
     },
-
     "processor": "AT32F415",
-
     "rgb_matrix": {
         "animations": {
             "none": true,
