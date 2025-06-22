@@ -136,13 +136,10 @@ The process of creating custom firmware for the Zoom75 Tri-Mode PCB was a huge e
 Also a huge thanks to anyone else who supported the project, if your name is not on the list while it should be, send us a message.
 
 # TODO: Add LCD support
-# TODO: Test RGB matrix
 # TODO: See if the via.json can be included in via's repository for automatic detection.
-# TODO: Add and test RGB sleep support.
 # TODO: Add and test LCD sleep support.
 # TODO: Update ReadMe.md (pictures, text and credits)
 # TODO: Create support for extra (currently empty) flash memory chip slot.
 # TODO: Create enhanced version of default keymap.
-# TODO: Only basic features for default keymap, while including all features for enhanced version.
 # TODO: Make alias for all custom keycodes.
 # TODO: Fix the via.json wording, sort all values including layout options.
