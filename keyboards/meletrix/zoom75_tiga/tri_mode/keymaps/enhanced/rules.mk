@@ -1,28 +1,16 @@
+BOOTMAGIC_ENABLE = yes
+CAPS_WORD_ENABLE = no
+COMBO_ENABLE = no
 ENCODER_ENABLE = yes
 ENCODER_MAP_ENABLE = yes
 KEYBOARD_SHARED_EP = yes
 VIA_ENABLE = yes
-VIAL_ENABLE = yes
 
-    # "bootmagic": {
-    #     "enabled": true,
-    #     "matrix": [ 0, 0 ]
-    # },
-    # "caps_word": {
-    #     "both_shifts_turns_on": false,
-    #     "double_tap_shift_turns_on": false,
-    #     "enabled": false,
-    #     "idle_timeout": 5000,
-    #     "invert_on_shift": false
-    # },
-    # "combo": {
-    #     "term": 50
-    # },
+
+
     # "features": {
-    #     "bootmagic": true,
     #     "command": true,
     #     "console": true,
-    #     "encoder": true,
     #     "extrakey": true,
     #     "mousekey": true,
     #     "nkro": true
