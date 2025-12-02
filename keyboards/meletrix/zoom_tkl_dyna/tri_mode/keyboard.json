@@ -74,26 +74,7 @@
             "starlight_dual_hue":        true, // LEDs turn on and off at random at varying brightness, modifies user set hue by +- 30
             "starlight_dual_sat":        true, // LEDs turn on and off at random at varying brightness, modifies user set saturation by +- 30
             "riverflow":                 true // Modification to breathing animation, offset's animation depending on key location to simulate a river flowing
-        },
-        "center_point": [112, 32],
-        "default": {
-            "animation": "rainbow_moving_chevron",
-            "on":   true,
-            "hue":     0,
-            "sat":   255,
-            "val":   255,
-            "speed": 128
-        },
-        "driver":      "ws2812",
-        "hue_steps":          8,
-        "led_flush_limit":   16,
-        "max_brightness":   255,
-        "react_on_keyup": false,
-        "sat_steps":         16,
-        "sleep":           true,
-        "speed_steps":       16,
-        "timeout":         3000,
-        "val_steps":         16
+        }
     },
     "layouts": {
         "LAYOUT": {

@@ -29,6 +29,6 @@
 // #define COMBO_TERM 40 // Set the timeout period.
 
 
-#define RGB_DISABLE_WHEN_USB_SUSPENDED true
-#define RGB_MATRIX_SLEEP
-#define RGB_MATRIX_TIMEOUT 3000
+// #define RGB_DISABLE_WHEN_USB_SUSPENDED true
+// #define RGB_MATRIX_SLEEP
+// #define RGB_MATRIX_TIMEOUT 3000
