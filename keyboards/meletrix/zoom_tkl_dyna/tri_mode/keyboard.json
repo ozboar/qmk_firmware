@@ -18,10 +18,6 @@
         "pid": "0xC987",
         "vid": "0x5542"
     },
-    "ws2812": {
-        "driver": "pwm",
-        "pin":     "B8"
-    },
     "rgb_matrix": {
         "animations": {
             "solid_color":               true,
