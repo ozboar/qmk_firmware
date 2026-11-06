@@ -10,6 +10,9 @@ void screen_task(void);
 /* Screen power for idle and suspend. Stays off if the user turned the screen off */
 void screen_set_power(bool on);
 
+/* Lowers the custom firmware's backlight for idle, stock firmware has no way to dim */
+void screen_set_dim(bool on);
+
 /* Shows the battery on the stock UI, 0 while charging and otherwise 1 to 5 */
 void screen_set_battery(uint8_t level);
 

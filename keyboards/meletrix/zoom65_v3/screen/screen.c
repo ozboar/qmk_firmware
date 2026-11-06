@@ -173,6 +173,14 @@ void screen_set_power(bool on) {
     }
 }
 
+void screen_set_dim(bool on) {
+#ifdef LCDFW_ENABLE
+    lcdfw_set_dim(on);
+#else
+    (void)on;
+#endif
+}
+
 void screen_set_battery(uint8_t level) {
     if (screen_custom_enabled() || level == battery_sent || screen_uart_owned_elsewhere() || timer_elapsed32(host_timer) < BATTERY_HOST_QUIET_MS) {
         return;
@@ -285,9 +293,17 @@ void screen_host_command(const uint8_t *frame, uint8_t len) {
         return;
     }
 
+    const bool media = frame[0] != FRAME_START || (len > 1 && frame[1] == GROUP_MEDIA) || len > 8;
+#    ifdef LCDFW_ENABLE
+    /* Waking the screen for this would be lost anyway, and the host blocks until it gets a reply */
+    if (screen_custom_enabled() && lcdfw_asleep()) {
+        send_reply(!media);
+        return;
+    }
+#    endif
+
     while (sdGetTimeout(&SD3, TIME_IMMEDIATE) != MSG_TIMEOUT) {
     }
-    const bool media = frame[0] != FRAME_START || (len > 1 && frame[1] == GROUP_MEDIA) || len > 8;
     sdWrite(&SD3, frame, len);
 
     reply_pending = true;

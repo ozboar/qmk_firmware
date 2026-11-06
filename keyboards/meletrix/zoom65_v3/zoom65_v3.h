@@ -24,5 +24,8 @@ kb_config_t kb_config_load(void);
 void        kb_config_save(void);
 
 void kb_led_power(bool on);
+
+/* Powers the LEDs only while something can light them */
+void kb_led_update(void);
 bool kb_cable_connected(void);
 bool kb_battery_full(void);

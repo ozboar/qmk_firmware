@@ -178,6 +178,10 @@ void wireless_on_wake(void) {
     module_clear_battery_critical();
 }
 
+bool wireless_link_active(void) {
+    return link_state == LINK_PAIRING || link_state == LINK_RECONNECTING;
+}
+
 bool wireless_busy(void) {
     return dirty || module_busy();
 }

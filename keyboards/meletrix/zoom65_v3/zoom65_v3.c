@@ -7,6 +7,7 @@
 #endif
 #include "zoom65_v3.h"
 #include "wireless/wireless.h"
+#include "wireless/sleep.h"
 #include "screen/screen.h"
 #ifdef LCDFW_ENABLE
 #    include "lcdfw/lcdfw.h"
@@ -31,9 +32,28 @@ void kb_config_save(void) {
     eeconfig_update_kb(kb_config.raw);
 }
 
+/* The data pin lets go while the rail is off, or the LED updates would feed power into the LEDs */
 void kb_led_power(bool on) {
+    if (on) {
+        gpio_write_pin_low(WS2812_DI_PIN);
+        gpio_set_pin_output(WS2812_DI_PIN);
+    } else {
+        gpio_set_pin_input_low(WS2812_DI_PIN);
+    }
     gpio_write_pin(LED_POWER_PIN, !on);
     gpio_write_pin(LED_POWER_AUX_PIN, !on);
+}
+
+void kb_led_update(void) {
+    static bool powered = true;
+
+    /* QMK only draws indicators when an effect is running, so nothing can light without one */
+    const bool wanted = !sleep_leds_off() && rgb_matrix_is_enabled() && rgb_matrix_get_mode() != RGB_MATRIX_NONE && !rgb_matrix_get_suspend_state();
+
+    if (wanted != powered) {
+        powered = wanted;
+        kb_led_power(wanted);
+    }
 }
 
 bool kb_cable_connected(void) {
@@ -114,6 +134,7 @@ static void usb_suspend_task(void) {
 void housekeeping_task_kb(void) {
     screen_task();
     usb_suspend_task();
+    kb_led_update();
     housekeeping_task_user();
 }
 

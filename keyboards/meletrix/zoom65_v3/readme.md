@@ -37,7 +37,9 @@ Their order matches the stock firmware, so stock VIA definitions still line up.
 
 The driver lives in `wireless/` and plugs into QMK as a custom Bluetooth driver. Raw HID also goes over the 2.4 GHz link, so VIA and `zoom-sync` can reach the keyboard through the dongle.
 
-The keyboard goes to sleep after 3 minutes without input, or after pairing or reconnecting times out. A key press wakes it.
+In a wireless mode, 1 minute without input turns the RGB off and dims the screen to a quarter. Any input restores them. The keyboard goes to sleep after 3 minutes without input, or after pairing or reconnecting times out, and a key press wakes it.
+
+The custom screen firmware follows the RGB brightness setting, down to a 5% floor, and its MCU sleeps along with the keyboard. The LED power stays off whenever RGB is off, in any mode.
 
 ## Custom screen firmware
 

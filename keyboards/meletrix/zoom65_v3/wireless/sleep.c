@@ -5,6 +5,7 @@
 #include "wireless.h"
 #include "screen/screen.h"
 
+#define IDLE_DIM_MS 60000
 #define IDLE_TIMEOUT_MS 180000
 #define STOP_DELAY_MS 100
 
@@ -24,8 +25,20 @@ static const pin_t col_pins[] = MATRIX_COL_PINS;
 static const pin_t row_pins[] = MATRIX_ROW_PINS;
 
 static bool     lights_off;
+static bool     dimmed;
 static bool     rgb_was_on;
 static uint32_t lights_off_timer;
+
+bool sleep_leds_off(void) {
+    return lights_off || (dimmed && !wireless_link_active());
+}
+
+static void set_dimmed(bool on) {
+    if (dimmed != on) {
+        dimmed = on;
+        screen_set_dim(on);
+    }
+}
 
 static void run_code(const uint32_t *code) {
     ((void (*)(void))((uint32_t)code | 1))();
@@ -33,18 +46,20 @@ static void run_code(const uint32_t *code) {
 
 /* The screen goes off here, well before stop mode, as stopping would cut off its frame in the UART */
 static void set_lights(bool on) {
-    screen_set_power(on);
     if (on) {
-        kb_led_power(true);
+        set_dimmed(false);
+    }
+    screen_set_power(on);
+    lights_off = !on;
+    if (on) {
         if (rgb_was_on) {
             rgb_matrix_enable_noeeprom();
         }
     } else {
         rgb_was_on = rgb_matrix_is_enabled();
         rgb_matrix_disable_noeeprom();
-        kb_led_power(false);
     }
-    lights_off = !on;
+    kb_led_update();
 }
 
 static void prepare_wake_pins(void) {
@@ -125,10 +140,12 @@ void sleep_task(void) {
         if (lights_off) {
             set_lights(true);
         }
+        set_dimmed(false);
         return;
     }
 
     if (!lights_off) {
+        set_dimmed(last_input_activity_elapsed() >= IDLE_DIM_MS);
         if ((wireless_should_sleep() || last_input_activity_elapsed() >= IDLE_TIMEOUT_MS) && !wireless_busy()) {
             set_lights(false);
             lights_off_timer = timer_read32();

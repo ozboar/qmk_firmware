@@ -33,5 +33,8 @@ void wireless_on_wake(void);
 /* True while reports are still on their way to the module */
 bool wireless_busy(void);
 
+/* Pairing or reconnecting, and showing it on the LEDs */
+bool wireless_link_active(void);
+
 /* Draws the connection and battery indicators */
 void wireless_indicators(uint8_t led_min, uint8_t led_max);

@@ -40,6 +40,11 @@
 #define UNITS_SYSTEM_F (1u << 0)
 #define UNITS_WEATHER_F (1u << 1)
 #define ACCENT_COUNT 7
+#define BRIGHTNESS_FLOOR 5
+#define BRIGHTNESS_DIM_DIVISOR 4
+#define WAKE_RETRY_MS 20
+#define WAKE_ATTEMPTS 10
+#define WAKE_READY 0x5A
 
 enum {
     UI_TAP = 0x01,
@@ -60,6 +65,8 @@ enum {
     UI_BUILD = 0x10,
     UI_VERSIONS = 0x11,
     UI_MEDIA = 0x12,
+    UI_BRIGHTNESS = 0x13,
+    UI_WAKE = 0x14,
 };
 
 static uint8_t      mode;
@@ -69,6 +76,11 @@ static uint8_t      clock_face;
 static uint8_t      media;
 static bool         backlight = true;
 static bool         powered   = true;
+static bool         waking;
+static bool         dimmed;
+static uint8_t      wake_attempts;
+static uint32_t     wake_timer;
+static uint8_t      brightness_sent;
 static bool         enabled;
 static bool         state_sent;
 static uint32_t     task_timer;
@@ -99,7 +111,7 @@ static matrix_row_t keys_sent[MATRIX_ROWS];
 
 /* Never blocks, so UI traffic cannot stall the matrix. A dropped frame is resent by the refresh */
 static void send(uint8_t command, const uint8_t *payload, uint8_t len) {
-    if (!enabled || screen_probe_active()) {
+    if (!enabled || screen_probe_active() || (lcdfw_asleep() && command != UI_POWER && command != UI_WAKE)) {
         return;
     }
     uint8_t frame[3 + RGB_NAME_SIZE] = {FRAME_START, GROUP_UI, command};
@@ -109,6 +121,21 @@ static void send(uint8_t command, const uint8_t *payload, uint8_t len) {
 
 static void send_u8(uint8_t command, uint8_t value) {
     send(command, &value, 1);
+}
+
+/* Follows the RGB brightness setting, but stays readable when that is at its lowest */
+static uint8_t read_brightness(void) {
+    uint8_t percent = MIN((uint16_t)rgb_matrix_get_val() * 100 / RGB_MATRIX_MAXIMUM_BRIGHTNESS, 100);
+
+    if (dimmed) {
+        percent /= BRIGHTNESS_DIM_DIVISOR;
+    }
+    return MAX(percent, BRIGHTNESS_FLOOR);
+}
+
+static void send_brightness(uint8_t percent) {
+    send_u8(UI_BRIGHTNESS, percent);
+    brightness_sent = percent;
 }
 
 static void send_wpm(uint16_t wpm) {
@@ -203,8 +230,9 @@ static void send_all(void) {
     send_build();
     send_versions();
     send_u8(UI_MODE, mode);
-    send_u8(UI_POWER, powered);
+    send_brightness(read_brightness());
     send_u8(UI_BACKLIGHT, backlight);
+    send_u8(UI_POWER, powered);
     read_status(status);
     send_status(status);
     uint8_t extra[sizeof(extra_sent)];
@@ -231,12 +259,36 @@ void lcdfw_init(uint8_t saved_mode, uint8_t saved_accent, uint8_t saved_units, u
 void lcdfw_start(void) {
     enabled    = true;
     state_sent = false;
+    waking     = false;
     lcdfw_load_restart();
 }
 
 void lcdfw_stop(void) {
     enabled = false;
+    waking  = false;
     lcdfw_load_stop();
+}
+
+/* The first frames are lost while the screen restarts its clocks, so keep asking */
+static void wake_task(void) {
+    msg_t byte;
+
+    while ((byte = sdGetTimeout(&SD3, TIME_IMMEDIATE)) >= MSG_OK) {
+        if (byte == WAKE_READY) {
+            waking     = false;
+            state_sent = false;
+            return;
+        }
+    }
+    if (timer_elapsed32(wake_timer) < WAKE_RETRY_MS) {
+        return;
+    }
+    if (++wake_attempts >= WAKE_ATTEMPTS) {
+        lcdfw_start();
+        return;
+    }
+    wake_timer = timer_read32();
+    send(UI_WAKE, (const uint8_t *)"", 0);
 }
 
 void lcdfw_task(void) {
@@ -254,6 +306,14 @@ void lcdfw_task(void) {
         return;
     }
 
+    if (waking) {
+        wake_task();
+        return;
+    }
+    if (!powered) {
+        return;
+    }
+
     if (timer_elapsed32(task_timer) < TASK_INTERVAL_MS) {
         return;
     }
@@ -263,6 +323,10 @@ void lcdfw_task(void) {
         refresh_timer = timer_read32();
         send_all();
         return;
+    }
+
+    if (read_brightness() != brightness_sent) {
+        send_brightness(read_brightness());
     }
 
     if (get_current_wpm() != wpm_sent) {
@@ -295,8 +359,28 @@ void lcdfw_task(void) {
 }
 
 void lcdfw_set_power(bool on) {
+    if (on == powered) {
+        return;
+    }
     powered = on;
-    send_u8(UI_POWER, on);
+    if (!on) {
+        waking = false;
+        send_u8(UI_POWER, false);
+    } else if (enabled && state_sent) {
+        /* Otherwise the firmware is still loading, and gets the power state along with the rest */
+        waking        = true;
+        wake_attempts = 0;
+        wake_timer    = timer_read32();
+        send(UI_WAKE, (const uint8_t *)"", 0);
+    }
+}
+
+bool lcdfw_asleep(void) {
+    return !powered || waking;
+}
+
+void lcdfw_set_dim(bool on) {
+    dimmed = on;
 }
 
 void lcdfw_on_keypress(uint8_t row, uint8_t col) {
