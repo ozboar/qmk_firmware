@@ -1,0 +1,110 @@
+{
+    "keyboard_name": "Zoom65 v3",
+    "manufacturer": "Meletrix",
+    "maintainer": "self@ossian.dev",
+    "usb": {
+        "vid": "0x36B5",
+        "pid": "0x287F",
+        "device_version": "0.8.0",
+        "suspend_wakeup_delay": 400
+    },
+    "host": {"default": {"nkro": true}},
+    "processor": "WB32FQ95",
+    "bootloader": "wb32-dfu",
+    "features": {
+        "bootmagic"    : true,
+        "mousekey"     : true,
+        "extrakey"     : true,
+        "nkro"         : true,
+        "encoder"      : true,
+        "rgb_matrix"   : true,
+        "bluetooth"    : true
+    },
+    "qmk": {
+        "locking": {
+            "enabled": true,
+            "resync": true
+        }
+    },
+    "bluetooth": {"driver": "custom"},
+    "eeprom": {
+        "driver": "wear_leveling",
+        "wear_leveling": {"driver": "spi_flash", "backing_size": 8192}
+    },
+    "dynamic_keymap": {"layer_count": 16},
+    "keycodes": [
+        {"key": "WL_BT1" },
+        {"key": "WL_BT2" },
+        {"key": "WL_BT3" },
+        {"key": "WL_2G4" },
+        {"key": "WL_USB" },
+        {"key": "SC_TOGG"},
+        {"key": "SC_SWCH"},
+        {"key": "SC_DOWN"},
+        {"key": "SC_UP"  },
+        {"key": "SC_RST" },
+        {"key": "SC_BOOT"},
+        {"key": "WL_BATT"}
+    ],
+    "matrix_pins": {
+        "cols": [
+            "C1", "C2", "C3", "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "C4",
+            "C5", "B0", "B1", "B2"
+        ],
+        "rows": ["C6", "C7", "C8", "C9", "B14"]
+    },
+    "diode_direction": "ROW2COL",
+    "encoder": {
+        "rotary": [ {"pin_a": "C13", "pin_b": "C14", "resolution": 2} ]
+    },
+    "ws2812": {"pin": "B10", "driver": "bitbang"},
+    "rgb_matrix": {
+        "driver": "ws2812",
+        "val_steps": 16,
+        "react_on_keyup": false,
+        "sleep": true,
+        "animations": {
+            "alphas_mods"              : true,
+            "gradient_up_down"         : true,
+            "gradient_left_right"      : true,
+            "breathing"                : true,
+            "cycle_all"                : true,
+            "cycle_left_right"         : true,
+            "cycle_up_down"            : true,
+            "cycle_out_in"             : true,
+            "cycle_out_in_dual"        : true,
+            "rainbow_moving_chevron"   : true,
+            "cycle_pinwheel"           : true,
+            "cycle_spiral"             : true,
+            "dual_beacon"              : true,
+            "rainbow_beacon"           : true,
+            "rainbow_pinwheels"        : true,
+            "flower_blooming"          : true,
+            "raindrops"                : true,
+            "jellybean_raindrops"      : true,
+            "hue_breathing"            : true,
+            "hue_pendulum"             : true,
+            "hue_wave"                 : true,
+            "pixel_fractal"            : true,
+            "pixel_flow"                : true,
+            "pixel_rain"               : true,
+            "typing_heatmap"           : true,
+            "digital_rain"             : true,
+            "solid_reactive_simple"    : true,
+            "solid_reactive"           : true,
+            "solid_reactive_wide"      : true,
+            "solid_reactive_multiwide" : true,
+            "solid_reactive_cross"     : true,
+            "solid_reactive_multicross": true,
+            "solid_reactive_nexus"     : true,
+            "solid_reactive_multinexus": true,
+            "splash"                   : true,
+            "multisplash"              : true,
+            "solid_splash"             : true,
+            "solid_multisplash"        : true,
+            "starlight"                : true,
+            "riverflow"                : true
+        }
+    }
+}
+

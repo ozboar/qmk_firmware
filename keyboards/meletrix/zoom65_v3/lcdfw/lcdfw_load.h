@@ -1,0 +1,22 @@
+#pragma once
+
+#include <stdbool.h>
+#include <stdint.h>
+
+/*
+ * Loads the screen firmware into the screen's SRAM through its ROM bootloader,
+ * one small step per call so typing keeps working. Returns true while busy.
+ */
+bool lcdfw_load_task(void);
+
+/* True once the screen firmware is running */
+bool lcdfw_load_done(void);
+
+/* Writes loaded (0 or 1), attempts used, duration in ms (u16, big endian), last failed step */
+void lcdfw_load_report(uint8_t *out);
+
+extern const uint8_t  lcd_image[];
+extern const uint32_t lcd_image_size;
+extern const uint32_t lcd_image_crc;
+extern const uint8_t  lcd_stage1[];
+extern const uint32_t lcd_stage1_size;

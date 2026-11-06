@@ -1,0 +1,15 @@
+#pragma once
+
+#include_next <mcuconf.h>
+
+#undef WB32_SPI_USE_QSPI
+#define WB32_SPI_USE_QSPI TRUE
+
+#undef WB32_SERIAL_USE_UART1
+#define WB32_SERIAL_USE_UART1 TRUE
+
+#undef WB32_SERIAL_UART1_PRIORITY
+#define WB32_SERIAL_UART1_PRIORITY 8
+
+#undef WB32_SERIAL_USE_UART3
+#define WB32_SERIAL_USE_UART3 TRUE
