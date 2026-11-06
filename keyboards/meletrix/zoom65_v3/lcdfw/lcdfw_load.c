@@ -36,6 +36,9 @@
 #define STAGE_OP_LOAD 'L'
 #define STAGE_OP_GO 'G'
 
+#define CRC32_INITIAL 0xFFFFFFFFu
+#define CRC32_POLYNOMIAL 0xEDB88320u
+
 static bool reset_held;
 static bool uart_session;
 
@@ -192,6 +195,18 @@ static uint8_t     tries;
 static uint8_t     load_attempts;
 static bool        loaded;
 
+static uint32_t image_crc;
+
+static uint32_t crc32_update(uint32_t crc, const uint8_t *data, uint16_t length) {
+    while (length--) {
+        crc ^= *data++;
+        for (uint8_t bit = 0; bit < 8; bit++) {
+            crc = (crc >> 1) ^ ((crc & 1) ? CRC32_POLYNOMIAL : 0);
+        }
+    }
+    return crc;
+}
+
 static void next_step(load_step_t next) {
     step       = next;
     step_timer = timer_read32();
@@ -303,7 +318,8 @@ bool lcdfw_load_task(void) {
 
         case STEP_WAIT_STAGE1:
             if (poll_ready(STAGE1_READY)) {
-                offset = 0;
+                offset    = 0;
+                image_crc = CRC32_INITIAL;
                 if (stage_begin(LOAD_ADDRESS, lcd_image_size)) {
                     next_step(STEP_SEND_IMAGE);
                 } else {
@@ -318,6 +334,7 @@ bool lcdfw_load_task(void) {
             uint32_t remaining = lcd_image_size - offset;
             uint16_t length    = remaining < STAGE1_CHUNK ? remaining : STAGE1_CHUNK;
             stage_data(lcd_image + offset, length);
+            image_crc = crc32_update(image_crc, lcd_image + offset, length);
             offset += length;
             if (offset >= lcd_image_size) {
                 next_step(STEP_CHECK_IMAGE);
@@ -327,7 +344,7 @@ bool lcdfw_load_task(void) {
 
         case STEP_CHECK_IMAGE: {
             uint32_t crc = 0;
-            if (stage_crc(&crc) && crc == lcd_image_crc) {
+            if (stage_crc(&crc) && crc == ~image_crc) {
                 next_step(STEP_GO_IMAGE);
             } else {
                 load_failed();

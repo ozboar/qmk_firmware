@@ -23,6 +23,5 @@ bool lcdfw_load_owns_uart(void);
 
 extern const uint8_t  lcd_image[];
 extern const uint32_t lcd_image_size;
-extern const uint32_t lcd_image_crc;
 extern const uint8_t  lcd_stage1[];
 extern const uint32_t lcd_stage1_size;
