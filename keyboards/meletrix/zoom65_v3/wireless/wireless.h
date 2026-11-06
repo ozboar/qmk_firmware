@@ -9,6 +9,8 @@ typedef enum {
     WL_DEV_BT1 = 1,
     WL_DEV_BT2 = 2,
     WL_DEV_BT3 = 3,
+    WL_DEV_BT4 = 4,
+    WL_DEV_BT5 = 5,
     WL_DEV_2G4 = 6,
 } wl_dev_t;
 

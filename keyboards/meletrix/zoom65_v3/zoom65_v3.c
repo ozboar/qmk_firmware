@@ -141,6 +141,12 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
         case BT_PRF3:
             wireless_device_key(WL_DEV_BT3, pressed);
             return false;
+        case BT_PRF4:
+            wireless_device_key(WL_DEV_BT4, pressed);
+            return false;
+        case BT_PRF5:
+            wireless_device_key(WL_DEV_BT5, pressed);
+            return false;
         case WL_2G4:
         case OU_2P4G:
             wireless_device_key(WL_DEV_2G4, pressed);

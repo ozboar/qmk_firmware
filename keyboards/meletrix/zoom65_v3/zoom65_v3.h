@@ -12,8 +12,9 @@ typedef union {
         uint8_t screen_accent : 3;
         uint8_t screen_units : 2;
         uint8_t screen_clock_face : 2;
-        uint8_t screen_media : 1;
+        uint8_t reserved : 1;
         uint8_t screen_custom : 1;
+        uint8_t screen_media : 2;
     };
 } kb_config_t;
 

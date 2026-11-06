@@ -27,6 +27,9 @@
 /* The Q, W, E and R keys */
 #define BT1_LED 15
 #define G24_LED 18
+/* The A and S keys, whose LEDs differ between layouts */
+#define BT4_LED g_led_config.matrix_co[2][1]
+#define BT5_LED g_led_config.matrix_co[2][2]
 
 #define BATTERY_BAR_FIRST_LED 1
 #define BATTERY_GOOD_PERCENT 50
@@ -88,6 +91,10 @@ static uint8_t channel_command(wl_dev_t device) {
             return MODULE_CMD_BT2;
         case WL_DEV_BT3:
             return MODULE_CMD_BT3;
+        case WL_DEV_BT4:
+            return MODULE_CMD_BT4;
+        case WL_DEV_BT5:
+            return MODULE_CMD_BT5;
         case WL_DEV_2G4:
             return MODULE_CMD_2G4;
         default:
@@ -242,7 +249,7 @@ static void boot_task(void) {
 void bluetooth_init(void) {
     const uint8_t stored = kb_config_load().wireless_device;
 
-    if (stored == WL_DEV_BT1 || stored == WL_DEV_BT2 || stored == WL_DEV_BT3 || stored == WL_DEV_2G4) {
+    if ((stored >= WL_DEV_BT1 && stored <= WL_DEV_BT5) || stored == WL_DEV_2G4) {
         last_wireless = stored;
     }
     /* Only USB and the module are ever valid here, whatever older settings left behind */
@@ -410,7 +417,7 @@ void wireless_indicators(uint8_t led_min, uint8_t led_max) {
     }
 
     if ((link_state == LINK_CONNECTED) || blink_on) {
-        const uint8_t led = device == WL_DEV_2G4 ? G24_LED : BT1_LED + device - WL_DEV_BT1;
+        const uint8_t led = device == WL_DEV_2G4 ? G24_LED : device == WL_DEV_BT4 ? BT4_LED : device == WL_DEV_BT5 ? BT5_LED : BT1_LED + device - WL_DEV_BT1;
         if (device == WL_DEV_2G4) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led, 255, 0, 0);
         } else {

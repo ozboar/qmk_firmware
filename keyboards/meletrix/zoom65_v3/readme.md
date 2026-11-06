@@ -24,6 +24,7 @@ Their order matches the stock firmware, so stock VIA definitions still line up.
 | Keycode | Function |
 |---|---|
 | `WL_BT1`, `WL_BT2`, `WL_BT3`, `WL_2G4` | Select a wireless device, hold 3 seconds to pair |
+| `BT_PRF4`, `BT_PRF5` | Select Bluetooth 4 or 5, hold 3 seconds to pair |
 | `WL_USB` | Select USB |
 | `SC_TOGG` | Screen on or off |
 | `SC_SWCH`, `SC_DOWN`, `SC_UP` | Next page, move down, move up |

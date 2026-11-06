@@ -11,6 +11,8 @@ enum {
     MODULE_CMD_BT1      = 0x31,
     MODULE_CMD_BT2      = 0x32,
     MODULE_CMD_BT3      = 0x33,
+    MODULE_CMD_BT4      = 0x34,
+    MODULE_CMD_BT5      = 0x35,
     MODULE_CMD_PAIR     = 0x51,
     MODULE_CMD_BATTERY  = 0x53,
     MODULE_CMD_BT_SLEEP = 0x55,
