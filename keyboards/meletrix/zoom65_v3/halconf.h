@@ -8,7 +8,7 @@
 #ifdef SCREEN_PROBE_ENABLE
 #    define SERIAL_BUFFERS_SIZE 2048
 #else
-#    define SERIAL_BUFFERS_SIZE 128
+#    define SERIAL_BUFFERS_SIZE 512
 #endif
 
 #include_next <halconf.h>
