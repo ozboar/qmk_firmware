@@ -41,7 +41,7 @@ The keyboard goes to sleep after 3 minutes without input, or after pairing or re
 
 ## Custom screen firmware
 
-Keeps the stock screen module, and can run custom firmware from the `zoom65v3-lcd-firmware` repo instead of the stock UI. Turn it on or off with the Custom screen firmware toggle in VIA, or with `SC_FRMW` (Fn+/ on the VIA keymap). The change is immediate and saved, and the stock UI is the default.
+Keeps the stock screen module, and can run custom firmware from the `zoom65v3-lcd-firmware` repo instead of the stock UI. Turn it on or off with the Custom screen firmware toggle in VIA, or with `SC_FRMW` (Fn+/ on the VIA keymap). The change is immediate and saved, and the custom firmware is the default.
 
 The keyboard loads the firmware into the screen's SRAM, at every boot while it is on. The screen's flash is never written, so turning it off resets the screen back to stock.
 

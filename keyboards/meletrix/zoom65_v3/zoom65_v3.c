@@ -47,6 +47,7 @@ bool kb_battery_full(void) {
 void eeconfig_init_kb(void) {
     kb_config.raw             = 0;
     kb_config.wireless_device = WL_DEV_BT1;
+    kb_config.screen_custom   = true;
     kb_config_save();
     eeconfig_init_user();
 }
