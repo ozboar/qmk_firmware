@@ -179,7 +179,7 @@ static void send_build(void) {
     uint8_t build[BUILD_FIELD_SIZE * 2] = {0};
 
     memcpy(build, QMK_BUILDDATE, BUILD_FIELD_SIZE);
-    strncpy((char *)build + BUILD_FIELD_SIZE, LCDFW_GIT_HASH, BUILD_FIELD_SIZE);
+    strncpy((char *)build + BUILD_FIELD_SIZE, LCDFW_BUILD_ID, BUILD_FIELD_SIZE);
     send(UI_BUILD, build, sizeof(build));
 }
 
