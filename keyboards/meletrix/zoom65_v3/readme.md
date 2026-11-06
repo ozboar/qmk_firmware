@@ -43,8 +43,8 @@ The custom screen firmware follows the RGB brightness setting, down to a 5% floo
 
 ## Custom screen firmware
 
-Keeps the stock screen module, and can run custom firmware from the `zoom65v3-lcd-firmware` repo instead of the stock UI. Turn it on or off with the Custom screen firmware toggle in VIA, or with `SC_FRMW` (Fn+/ on the VIA keymap). The change is immediate and saved, and the custom firmware is the default.
+Keeps the stock screen module, and can run custom firmware from [`zoom65v3-lcd-firmware`](https://github.com/ozboar/zoom65v3-lcd-firmware) instead of the stock UI. Turn it on or off with the Custom screen firmware toggle in VIA, or with `SC_FRMW` (Fn+/ on the VIA keymap). The change is immediate and saved, and the custom firmware is the default.
 
-The keyboard loads the firmware into the screen's SRAM, at every boot while it is on. The screen's flash is never written, so turning it off resets the screen back to stock.
+The keyboard loads the firmware into the screen's SRAM, at every boot while it is on. It carries the [v0.1.0 release](https://github.com/ozboar/zoom65v3-lcd-firmware/releases/tag/v0.1.0) build, in `lcdfw/lcd_image.c`. The screen's flash is never written, so turning it off resets the screen back to stock.
 
 Add `LCDFW_ENABLE=no` to build without it.
