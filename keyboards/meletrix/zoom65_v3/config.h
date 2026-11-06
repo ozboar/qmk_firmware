@@ -31,6 +31,8 @@
 #define LED_POWER_PIN B7
 #define LED_POWER_AUX_PIN B12
 #define CABLE_DETECT_PIN B9
+/* One encoder pin is enough to wake, and the other shares its EXTI line with a matrix row */
+#define ENCODER_WAKE_PIN C13
 #define BATTERY_FULL_PIN B8
 #define WIRELESS_SWITCH_PIN C0
 

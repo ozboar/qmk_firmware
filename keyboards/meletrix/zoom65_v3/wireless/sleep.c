@@ -62,6 +62,24 @@ static void set_lights(bool on) {
     kb_led_update();
 }
 
+static void arm_wake_pin(pin_t pin, bool both_edges) {
+    const uint32_t pad  = PAL_PAD(pin);
+    const uint32_t bit  = 1u << pad;
+    const uint32_t port = ((uint32_t)PAL_PORT(pin) & 0x3FFF) >> 10;
+
+    gpio_set_pin_input_high(pin);
+    AFIO->EXTICR[pad >> 2] = (AFIO->EXTICR[pad >> 2] & ~(0xFu << ((pad & 3) * 4))) | (port << ((pad & 3) * 4));
+    if (both_edges) {
+        EXTI->RTSR |= bit;
+    } else {
+        EXTI->RTSR &= ~bit;
+    }
+    EXTI->FTSR |= bit;
+    EXTI->PR = bit;
+    EXTI->IMR |= bit;
+    EXTI->EMR &= ~bit;
+}
+
 static void prepare_wake_pins(void) {
     rccEnableEXTI();
 
@@ -70,21 +88,12 @@ static void prepare_wake_pins(void) {
         gpio_write_pin_low(col_pins[i]);
     }
 
+    /* Only a press wakes it, so a release does not cost another idle timeout */
     for (uint8_t i = 0; i < ARRAY_SIZE(row_pins); i++) {
-        const pin_t    row  = row_pins[i];
-        const uint32_t pad  = PAL_PAD(row);
-        const uint32_t bit  = 1u << pad;
-        const uint32_t port = ((uint32_t)PAL_PORT(row) & 0x3FFF) >> 10;
-
-        gpio_set_pin_input_high(row);
-        AFIO->EXTICR[pad >> 2] = (AFIO->EXTICR[pad >> 2] & ~(0xFu << ((pad & 3) * 4))) | (port << ((pad & 3) * 4));
-        /* Only a press wakes it, so a release does not cost another idle timeout */
-        EXTI->RTSR &= ~bit;
-        EXTI->FTSR |= bit;
-        EXTI->PR = bit;
-        EXTI->IMR |= bit;
-        EXTI->EMR &= ~bit;
+        arm_wake_pin(row_pins[i], false);
     }
+    /* The knob can rest at either level, so any step changes this pin one way or the other */
+    arm_wake_pin(ENCODER_WAKE_PIN, true);
 
     nvicEnableVector(EXTI9_5_IRQn, EXTI_IRQ_PRIORITY);
     nvicEnableVector(EXTI15_10_IRQn, EXTI_IRQ_PRIORITY);
@@ -94,6 +103,7 @@ static void release_wake_pins(void) {
     for (uint8_t i = 0; i < ARRAY_SIZE(row_pins); i++) {
         EXTI->IMR &= ~(1u << PAL_PAD(row_pins[i]));
     }
+    EXTI->IMR &= ~(1u << PAL_PAD(ENCODER_WAKE_PIN));
     EXTI->PR = EXTI_ALL_LINES;
     nvicDisableVector(EXTI9_5_IRQn);
     nvicDisableVector(EXTI15_10_IRQn);
@@ -138,7 +148,8 @@ static void stop_mcu(void) {
 }
 
 void sleep_task(void) {
-    if (wireless_device() == WL_DEV_USB) {
+    /* Sleeping saves nothing on cable power */
+    if (wireless_device() == WL_DEV_USB || kb_cable_connected()) {
         if (lights_off) {
             set_lights(true);
         }

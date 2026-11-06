@@ -37,7 +37,7 @@ Their order matches the stock firmware, so stock VIA definitions still line up.
 
 The driver lives in `wireless/` and plugs into QMK as a custom Bluetooth driver. Raw HID also goes over the 2.4 GHz link, so VIA and `zoom-sync` can reach the keyboard through the dongle.
 
-In a wireless mode, 1 minute without input turns the RGB off and dims the screen to a quarter. Any input restores them. The keyboard goes to sleep after 3 minutes without input, or after pairing or reconnecting times out, and a key press wakes it.
+On battery in a wireless mode, 1 minute without input turns the RGB off and dims the screen to a quarter. Any input restores them. The keyboard goes to sleep after 3 minutes without input, or after pairing or reconnecting times out, and a key press or turning the knob wakes it. With the cable connected it stays awake.
 
 The custom screen firmware follows the RGB brightness setting, down to a 5% floor, and its MCU sleeps along with the keyboard. The LED power stays off whenever RGB is off, in any mode.
 
@@ -48,5 +48,3 @@ Keeps the stock screen module, and can run custom firmware from the `zoom65v3-lc
 The keyboard loads the firmware into the screen's SRAM, at every boot while it is on. The screen's flash is never written, so turning it off resets the screen back to stock.
 
 Add `LCDFW_ENABLE=no` to build without it.
-
-Add `SCREEN_PROBE_ENABLE=yes` to load test builds from the host and read the boot load result.
