@@ -12,9 +12,6 @@
 #ifdef LCDFW_ENABLE
 #    include "lcdfw/lcdfw.h"
 #endif
-#if defined(LCDFW_ENABLE) || defined(SCREEN_PROBE_ENABLE)
-#    include "screen_probe/screen_probe.h"
-#endif
 
 #define SCREEN_HOST_REPORT_ID 0x58
 #define SCREEN_HOST_FRAME_MAX 30
@@ -222,15 +219,6 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
 #ifdef RAW_ENABLE
 /* Commands for the screen, on the same raw HID interface as VIA */
 bool via_command_kb(uint8_t *data, uint8_t length) {
-#    ifdef SCREEN_PROBE_ENABLE
-    if (data[0] == SCREEN_PROBE_REPORT_ID) {
-        uint8_t reply[RAW_EPSIZE];
-        screen_probe_command(data, reply);
-        raw_hid_send(reply, sizeof(reply));
-        screen_probe_stream(raw_hid_send);
-        return true;
-    }
-#    endif
     if (data[0] == SCREEN_HOST_REPORT_ID && data[1] <= SCREEN_HOST_FRAME_MAX) {
         screen_host_command(data + 2, data[1]);
         return true;

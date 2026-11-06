@@ -18,8 +18,8 @@ void lcdfw_load_stop(void);
 /* True once the screen firmware is running */
 bool lcdfw_load_done(void);
 
-/* Writes loaded (0 or 1), attempts used, duration in ms (u16, big endian), last failed step */
-void lcdfw_load_report(uint8_t *out);
+/* True while loading has UART3 or the screen's reset line */
+bool lcdfw_load_owns_uart(void);
 
 extern const uint8_t  lcd_image[];
 extern const uint32_t lcd_image_size;

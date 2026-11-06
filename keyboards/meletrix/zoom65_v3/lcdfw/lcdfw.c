@@ -7,7 +7,6 @@
 #include "wireless/wireless.h"
 #include "lcdfw.h"
 #include "lcdfw_load.h"
-#include "screen_probe/screen_probe.h"
 
 #if defined(KEYBOARD_meletrix_zoom65_v3_iso) || defined(KEYBOARD_meletrix_zoom65_v3_iso_tl)
 #    define LCDFW_ISO 1
@@ -111,7 +110,7 @@ static matrix_row_t keys_sent[MATRIX_ROWS];
 
 /* Never blocks, so UI traffic cannot stall the matrix. A dropped frame is resent by the refresh */
 static void send(uint8_t command, const uint8_t *payload, uint8_t len) {
-    if (!enabled || screen_probe_active() || (lcdfw_asleep() && command != UI_POWER && command != UI_WAKE)) {
+    if (!enabled || lcdfw_load_owns_uart() || (lcdfw_asleep() && command != UI_POWER && command != UI_WAKE)) {
         return;
     }
     uint8_t frame[3 + RGB_NAME_SIZE] = {FRAME_START, GROUP_UI, command};

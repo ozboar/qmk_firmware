@@ -7,9 +7,7 @@
 #include "zoom65_v3.h"
 #ifdef LCDFW_ENABLE
 #    include "lcdfw/lcdfw.h"
-#endif
-#if defined(LCDFW_ENABLE) || defined(SCREEN_PROBE_ENABLE)
-#    include "screen_probe/screen_probe.h"
+#    include "lcdfw/lcdfw_load.h"
 #endif
 
 #define SCREEN_BAUD 115200
@@ -56,8 +54,8 @@ static uint32_t reply_timer;
 static uint32_t host_timer;
 
 static bool screen_uart_owned_elsewhere(void) {
-#if defined(LCDFW_ENABLE) || defined(SCREEN_PROBE_ENABLE)
-    return screen_probe_active();
+#ifdef LCDFW_ENABLE
+    return lcdfw_load_owns_uart();
 #else
     return false;
 #endif
@@ -119,7 +117,7 @@ void screen_init(void) {
     if (screen_custom_enabled()) {
         lcdfw_start();
     }
-#elif !defined(SCREEN_PROBE_ENABLE)
+#else
     gpio_set_pin_output(SCREEN_BOOT0_PIN);
     gpio_write_pin_low(SCREEN_BOOT0_PIN);
     gpio_set_pin_output(SCREEN_NRST_PIN);
