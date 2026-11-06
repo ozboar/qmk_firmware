@@ -5,6 +5,10 @@
 
 void    lcdfw_init(uint8_t mode, uint8_t accent, uint8_t units, uint8_t clock_face, uint8_t media);
 void    lcdfw_task(void);
+
+/* Loads the firmware onto the screen, or resets the screen back to stock */
+void    lcdfw_start(void);
+void    lcdfw_stop(void);
 void    lcdfw_set_power(bool on);
 void    lcdfw_on_keypress(uint8_t row, uint8_t col);
 void    lcdfw_toggle_backlight(void);

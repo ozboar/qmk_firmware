@@ -69,6 +69,8 @@ static uint8_t      clock_face;
 static uint8_t      media;
 static bool         backlight = true;
 static bool         powered   = true;
+static bool         enabled;
+static bool         state_sent;
 static uint32_t     task_timer;
 static uint32_t     refresh_timer;
 static uint16_t     wpm_sent;
@@ -97,7 +99,7 @@ static matrix_row_t keys_sent[MATRIX_ROWS];
 
 /* Never blocks, so UI traffic cannot stall the matrix. A dropped frame is resent by the refresh */
 static void send(uint8_t command, const uint8_t *payload, uint8_t len) {
-    if (screen_probe_active()) {
+    if (!enabled || screen_probe_active()) {
         return;
     }
     uint8_t frame[3 + RGB_NAME_SIZE] = {FRAME_START, GROUP_UI, command};
@@ -226,15 +228,25 @@ void lcdfw_init(uint8_t saved_mode, uint8_t saved_accent, uint8_t saved_units, u
     accent = saved_accent < ACCENT_COUNT ? saved_accent : 0;
 }
 
+void lcdfw_start(void) {
+    enabled    = true;
+    state_sent = false;
+    lcdfw_load_restart();
+}
+
+void lcdfw_stop(void) {
+    enabled = false;
+    lcdfw_load_stop();
+}
+
 void lcdfw_task(void) {
     uint8_t status[sizeof(status_sent)];
 
-    if (lcdfw_load_task()) {
+    if (!enabled || lcdfw_load_task()) {
         return;
     }
 
     /* The screen shows nothing until it knows the mode, so send everything the moment it is up */
-    static bool state_sent = false;
     if (!state_sent && lcdfw_load_done()) {
         state_sent    = true;
         refresh_timer = timer_read32();

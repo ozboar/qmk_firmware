@@ -18,3 +18,7 @@ bool screen_process_key(uint16_t keycode, bool pressed);
 
 /* Sends a frame to the screen for the host. The reply goes back on the raw HID interface */
 void screen_host_command(const uint8_t *frame, uint8_t len);
+
+/* Chooses custom or stock firmware, saved and applied right away */
+bool screen_custom_enabled(void);
+void screen_set_custom(bool on);

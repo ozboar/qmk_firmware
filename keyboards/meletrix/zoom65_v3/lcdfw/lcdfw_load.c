@@ -74,6 +74,22 @@ static void load_failed(void) {
     next_step(load_attempts < LOAD_ATTEMPTS ? STEP_START : STEP_DONE);
 }
 
+void lcdfw_load_restart(void) {
+    load_attempts = 0;
+    failed_step   = 0;
+    loaded        = false;
+    next_step(STEP_START);
+}
+
+void lcdfw_load_stop(void) {
+    screen_bl_uart(STOCK_BAUD, false, false);
+    screen_bl_reset(true);
+    wait_ms(RESET_PULSE_MS);
+    screen_bl_reset(false);
+    loaded = false;
+    next_step(STEP_DONE);
+}
+
 bool lcdfw_load_done(void) {
     return loaded;
 }

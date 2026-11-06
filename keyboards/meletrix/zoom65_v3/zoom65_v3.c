@@ -2,6 +2,9 @@
 #include QMK_KEYBOARD_H
 #include "usb_main.h"
 #include "raw_hid.h"
+#ifdef VIA_ENABLE
+#    include "via.h"
+#endif
 #include "zoom65_v3.h"
 #include "wireless/wireless.h"
 #include "screen/screen.h"
@@ -15,6 +18,7 @@
 #define SCREEN_HOST_REPORT_ID 0x58
 #define SCREEN_HOST_FRAME_MAX 30
 #define USB_REMOTE_WAKEUP_ENABLED 2U
+#define VIA_VALUE_CUSTOM_SCREEN 1
 
 kb_config_t kb_config;
 
@@ -65,9 +69,6 @@ void keyboard_pre_init_kb(void) {
 
 void keyboard_post_init_kb(void) {
     screen_init();
-#ifdef LCDFW_ENABLE
-    lcdfw_init(kb_config.screen_mode, kb_config.screen_accent, kb_config.screen_units, kb_config.screen_clock_face, kb_config.screen_media);
-#endif
     keyboard_post_init_user();
 }
 
@@ -201,6 +202,32 @@ bool via_command_kb(uint8_t *data, uint8_t length) {
     }
     return false;
 }
+
+#    ifdef VIA_ENABLE
+void via_custom_value_command_kb(uint8_t *data, uint8_t length) {
+    uint8_t *const command = &data[0];
+
+    if (data[1] != id_custom_channel || data[2] != VIA_VALUE_CUSTOM_SCREEN) {
+        *command = id_unhandled;
+        return;
+    }
+
+    switch (*command) {
+        case id_custom_set_value:
+            screen_set_custom(data[3]);
+            break;
+        case id_custom_get_value:
+            data[3] = screen_custom_enabled();
+            break;
+        case id_custom_save:
+            /* Already saved when set */
+            break;
+        default:
+            *command = id_unhandled;
+            break;
+    }
+}
+#    endif
 
 #    ifndef VIA_ENABLE
 __attribute__((weak)) bool raw_hid_receive_user(uint8_t *data, uint8_t length) {

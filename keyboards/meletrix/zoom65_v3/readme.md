@@ -30,6 +30,7 @@ Their order matches the stock firmware, so stock VIA definitions still line up.
 | `SC_RST` | Restart the screen |
 | `SC_BOOT` | Put the screen in its ROM bootloader |
 | `WL_BATT` | Show the battery on the number row while held |
+| `SC_FRMW` | Switch between the custom and stock screen firmware |
 
 ## Wireless
 
@@ -39,10 +40,10 @@ The keyboard goes to sleep after 3 minutes without input, or after pairing or re
 
 ## Custom screen firmware
 
-Keeps the stock screen module, and runs custom firmware from the `zoom65v3-lcd-firmware` repo instead of the stock UI:
+Keeps the stock screen module, and can run custom firmware from the `zoom65v3-lcd-firmware` repo instead of the stock UI. Turn it on or off with the Custom screen firmware toggle in VIA, or with `SC_FRMW` (Fn+/ on the VIA keymap). The change is immediate and saved, and the stock UI is the default.
 
-    make meletrix/zoom65_v3/ansi:via LCDFW_ENABLE=yes
+The keyboard loads the firmware into the screen's SRAM, at every boot while it is on. The screen's flash is never written, so turning it off resets the screen back to stock.
 
-The keyboard loads the firmware into the screen's SRAM at every boot. The screen's flash is never written, so stock firmware is back after a reset without this build.
+Add `LCDFW_ENABLE=no` to build without it.
 
 Add `SCREEN_PROBE_ENABLE=yes` to load test builds from the host and read the boot load result.

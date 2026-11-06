@@ -9,6 +9,12 @@
  */
 bool lcdfw_load_task(void);
 
+/* Starts a new load */
+void lcdfw_load_restart(void);
+
+/* Abandons any load and resets the screen to stock */
+void lcdfw_load_stop(void);
+
 /* True once the screen firmware is running */
 bool lcdfw_load_done(void);
 

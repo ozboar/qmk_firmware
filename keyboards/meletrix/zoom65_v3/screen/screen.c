@@ -4,8 +4,8 @@
 #ifdef RAW_ENABLE
 #    include "raw_hid.h"
 #endif
+#include "zoom65_v3.h"
 #ifdef LCDFW_ENABLE
-#    include "zoom65_v3.h"
 #    include "lcdfw/lcdfw.h"
 #endif
 #if defined(LCDFW_ENABLE) || defined(SCREEN_PROBE_ENABLE)
@@ -37,9 +37,23 @@
 /* Leaves the screen to the host for a while after it last sent something */
 #define BATTERY_HOST_QUIET_MS 10000
 
+#define BATTERY_UNSENT 0xFF
+
 static const SerialConfig serial_config = {
     SCREEN_BAUD, UART_WRDLEN, UART_STPBIT, UART_PARITY, UART_ATFLCT,
 };
+
+/* State of the stock firmware, which restarts with its backlight on */
+static bool    backlight_on = true;
+static bool    user_off;
+static uint8_t battery_sent = BATTERY_UNSENT;
+
+#ifdef RAW_ENABLE
+static bool     reply_pending;
+static uint16_t reply_timeout;
+static uint32_t reply_timer;
+#endif
+static uint32_t host_timer;
 
 static bool screen_uart_owned_elsewhere(void) {
 #if defined(LCDFW_ENABLE) || defined(SCREEN_PROBE_ENABLE)
@@ -49,10 +63,37 @@ static bool screen_uart_owned_elsewhere(void) {
 #endif
 }
 
-#ifndef LCDFW_ENABLE
-static bool    backlight_on = true;
-static bool    user_off;
-static uint8_t battery_sent = 0xFF;
+bool screen_custom_enabled(void) {
+#ifdef LCDFW_ENABLE
+    return kb_config.screen_custom;
+#else
+    return false;
+#endif
+}
+
+static void reset_stock_state(void) {
+    backlight_on = true;
+    user_off     = false;
+    battery_sent = BATTERY_UNSENT;
+}
+
+void screen_set_custom(bool on) {
+#ifdef LCDFW_ENABLE
+    if (on == screen_custom_enabled()) {
+        return;
+    }
+    kb_config.screen_custom = on;
+    kb_config_save();
+    if (on) {
+        lcdfw_start();
+    } else {
+        lcdfw_stop();
+        reset_stock_state();
+    }
+#else
+    (void)on;
+#endif
+}
 
 static void send_control(uint8_t command) {
     if (!screen_uart_owned_elsewhere()) {
@@ -67,21 +108,18 @@ static void set_backlight(bool on) {
         send_control(CONTROL_BACKLIGHT);
     }
 }
-#endif
-
-#ifdef RAW_ENABLE
-static bool     reply_pending;
-static uint16_t reply_timeout;
-static uint32_t reply_timer;
-#endif
-static uint32_t host_timer;
 
 void screen_init(void) {
     palSetLineMode(SD3_TX_PIN, PAL_MODE_ALTERNATE(UART_TX_PAL_MODE) | PAL_OUTPUT_TYPE_PUSHPULL | PAL_OUTPUT_SPEED_HIGHEST);
     palSetLineMode(SD3_RX_PIN, PAL_MODE_ALTERNATE(UART_RX_PAL_MODE) | PAL_OUTPUT_TYPE_PUSHPULL | PAL_OUTPUT_SPEED_HIGHEST);
     sdStart(&SD3, &serial_config);
 
-#if !defined(LCDFW_ENABLE) && !defined(SCREEN_PROBE_ENABLE)
+#ifdef LCDFW_ENABLE
+    lcdfw_init(kb_config.screen_mode, kb_config.screen_accent, kb_config.screen_units, kb_config.screen_clock_face, kb_config.screen_media);
+    if (screen_custom_enabled()) {
+        lcdfw_start();
+    }
+#elif !defined(SCREEN_PROBE_ENABLE)
     gpio_set_pin_output(SCREEN_BOOT0_PIN);
     gpio_write_pin_low(SCREEN_BOOT0_PIN);
     gpio_set_pin_output(SCREEN_NRST_PIN);
@@ -111,11 +149,7 @@ void screen_task(void) {
     while ((byte = sdGetTimeout(&SD3, TIME_IMMEDIATE)) >= MSG_OK) {
 #ifdef RAW_ENABLE
         if (reply_pending) {
-#    ifdef LCDFW_ENABLE
-            send_reply(byte != 0);
-#    else
-            send_reply(byte);
-#    endif
+            send_reply(screen_custom_enabled() ? byte != 0 : byte);
         }
 #endif
     }
@@ -129,29 +163,27 @@ void screen_task(void) {
 
 void screen_set_power(bool on) {
 #ifdef LCDFW_ENABLE
-    lcdfw_set_power(on);
-#else
+    if (screen_custom_enabled()) {
+        lcdfw_set_power(on);
+        return;
+    }
+#endif
     if (!user_off) {
         set_backlight(on);
     }
-#endif
 }
 
 void screen_set_battery(uint8_t level) {
-#ifdef LCDFW_ENABLE
-    (void)level;
-#else
-    if (level == battery_sent || screen_uart_owned_elsewhere() || timer_elapsed32(host_timer) < BATTERY_HOST_QUIET_MS) {
+    if (screen_custom_enabled() || level == battery_sent || screen_uart_owned_elsewhere() || timer_elapsed32(host_timer) < BATTERY_HOST_QUIET_MS) {
         return;
     }
     battery_sent          = level;
     const uint8_t frame[] = {FRAME_START, GROUP_DATA, DATA_BATTERY, level};
     sdWrite(&SD3, frame, sizeof(frame));
-#endif
 }
 
 #ifdef LCDFW_ENABLE
-bool screen_process_key(uint16_t keycode, bool pressed) {
+static bool process_custom_key(uint16_t keycode, bool pressed) {
     switch (keycode) {
         case SC_DOWN:
             if (pressed) {
@@ -192,9 +224,23 @@ bool screen_process_key(uint16_t keycode, bool pressed) {
             return false;
     }
 }
-#else
+#endif
+
 bool screen_process_key(uint16_t keycode, bool pressed) {
     uint8_t command;
+
+    if (keycode == SC_FRMW) {
+        if (pressed) {
+            screen_set_custom(!screen_custom_enabled());
+        }
+        return true;
+    }
+
+#ifdef LCDFW_ENABLE
+    if (screen_custom_enabled()) {
+        return process_custom_key(keycode, pressed);
+    }
+#endif
 
     switch (keycode) {
         case SC_TOGG:
@@ -217,9 +263,7 @@ bool screen_process_key(uint16_t keycode, bool pressed) {
             break;
         case SC_RST:
             if (pressed) {
-                backlight_on = true;
-                user_off     = false;
-                battery_sent = 0xFF;
+                reset_stock_state();
             }
             command = CONTROL_RESET;
             break;
@@ -231,7 +275,6 @@ bool screen_process_key(uint16_t keycode, bool pressed) {
     }
     return true;
 }
-#endif
 
 void screen_host_command(const uint8_t *frame, uint8_t len) {
     host_timer = timer_read32();

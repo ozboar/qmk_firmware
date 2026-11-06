@@ -44,7 +44,8 @@
         {"key": "SC_UP"  },
         {"key": "SC_RST" },
         {"key": "SC_BOOT"},
-        {"key": "WL_BATT"}
+        {"key": "WL_BATT"},
+        {"key": "SC_FRMW"}
     ],
     "matrix_pins": {
         "cols": [
