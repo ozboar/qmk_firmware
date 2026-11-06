@@ -47,10 +47,12 @@ Keeps the stock screen module, and can run custom firmware from [`zoom65v3-lcd-f
 
 The keyboard loads the firmware into the screen's SRAM, at every boot while it is on. The screen's flash is never written, so turning it off resets the screen back to stock.
 
-The firmware isn't in this repo. To include it, point the build at a build of it, or at the files from its [releases](https://github.com/ozboar/zoom65v3-lcd-firmware/releases). Without these, the keyboard is built for the stock UI only.
+The firmware isn't in this repo. The build downloads the latest [release](https://github.com/ozboar/zoom65v3-lcd-firmware/releases) with `curl`, checks it against the release's checksums, and keeps it in `.build/lcdfw`. To use your own build of it instead, give either or both paths:
 
 ```sh
 qmk compile -kb meletrix/zoom65_v3/ansi -km via \
     -e LCDFW_STAGE1=/path/to/build/stage1/stage1.bin \
     -e LCDFW_PAYLOAD=/path/to/build/lcd.bin
 ```
+
+Add `-e LCDFW_ENABLE=no` to build for the stock UI only, with no download.

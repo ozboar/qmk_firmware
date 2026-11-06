@@ -1,4 +1,14 @@
-# Custom firmware on the stock screen module, built from zoom65v3-lcd-firmware
+# Custom firmware on the stock screen module, built from zoom65v3-lcd-firmware.
+# LCDFW_STAGE1 and LCDFW_PAYLOAD use local files, and otherwise it comes from the latest release
+ifeq ($(and $(strip $(LCDFW_STAGE1)),$(strip $(LCDFW_PAYLOAD))),)
+    LCDFW_RELEASE := $(shell sh keyboards/meletrix/zoom65_v3/lcdfw/fetch_release.sh $(BUILD_DIR)/lcdfw)
+    ifeq ($(strip $(LCDFW_RELEASE)),)
+        $(error Could not get the LCD firmware. Set LCDFW_STAGE1 and LCDFW_PAYLOAD to local files, or LCDFW_ENABLE=no to build without it)
+    endif
+    LCDFW_STAGE1 := $(if $(strip $(LCDFW_STAGE1)),$(LCDFW_STAGE1),$(word 1,$(LCDFW_RELEASE)))
+    LCDFW_PAYLOAD := $(if $(strip $(LCDFW_PAYLOAD)),$(LCDFW_PAYLOAD),$(word 2,$(LCDFW_RELEASE)))
+endif
+
 LCDFW_STAGE1_PATH := $(abspath $(LCDFW_STAGE1))
 LCDFW_PAYLOAD_PATH := $(abspath $(LCDFW_PAYLOAD))
 ifeq ($(wildcard $(LCDFW_STAGE1_PATH)),)
