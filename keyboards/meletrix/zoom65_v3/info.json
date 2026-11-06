@@ -58,7 +58,7 @@
     "encoder": {
         "rotary": [ {"pin_a": "C13", "pin_b": "C14", "resolution": 2} ]
     },
-    "ws2812": {"pin": "B10", "driver": "bitbang"},
+    "ws2812": {"pin": "B10", "driver": "custom"},
     "rgb_matrix": {
         "driver": "ws2812",
         "val_steps": 16,

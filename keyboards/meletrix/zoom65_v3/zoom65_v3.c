@@ -23,6 +23,8 @@
 
 kb_config_t kb_config;
 
+static bool led_powered;
+
 kb_config_t kb_config_load(void) {
     kb_config.raw = eeconfig_read_kb();
     return kb_config;
@@ -34,6 +36,7 @@ void kb_config_save(void) {
 
 /* The data pin lets go while the rail is off, or the LED updates would feed power into the LEDs */
 void kb_led_power(bool on) {
+    led_powered = on;
     if (on) {
         gpio_write_pin_low(WS2812_DI_PIN);
         gpio_set_pin_output(WS2812_DI_PIN);
@@ -42,6 +45,10 @@ void kb_led_power(bool on) {
     }
     gpio_write_pin(LED_POWER_PIN, !on);
     gpio_write_pin(LED_POWER_AUX_PIN, !on);
+}
+
+bool kb_led_powered(void) {
+    return led_powered;
 }
 
 void kb_led_update(void) {

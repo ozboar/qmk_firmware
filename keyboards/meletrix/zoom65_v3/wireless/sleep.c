@@ -129,6 +129,8 @@ static void stop_mcu(void) {
     rccEnableUART1();
     rccEnableUART3();
     rccEnableQSPI();
+    rccEnableTIM3();
+    rccEnableDMAC1();
 
     release_wake_pins();
     matrix_init_pins();
@@ -157,7 +159,7 @@ void sleep_task(void) {
     if (last_input_activity_elapsed() < off_for) {
         wireless_on_wake();
         set_lights(true);
-    } else if (off_for >= STOP_DELAY_MS && !wireless_busy()) {
+    } else if (off_for >= STOP_DELAY_MS && !wireless_busy() && !ws2812_busy()) {
         stop_mcu();
         wireless_on_wake();
         set_lights(true);

@@ -38,6 +38,3 @@
 #define USB_SUSPEND_DELAY_MS 3000
 
 #define GRAVE_ESC_CTRL_OVERRIDE
-
-/* Each flush locks interrupts for about 2 ms, so do it half as often as the default */
-#define RGB_MATRIX_LED_FLUSH_LIMIT 32

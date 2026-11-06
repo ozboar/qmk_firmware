@@ -14,7 +14,14 @@
 #undef WB32_SERIAL_USE_UART3
 #define WB32_SERIAL_USE_UART3 TRUE
 
-/* 96 MHz. The WS2812 bit banging leaves unlit channels glowing at the default 72 MHz */
+/* Paces the DMA that drives the LEDs */
+#undef WB32_GPT_USE_TIM3
+#define WB32_GPT_USE_TIM3 TRUE
+
+#undef WB32_DMA_REQUIRED
+#define WB32_DMA_REQUIRED TRUE
+
+/* 96 MHz */
 #undef WB32_PLLDIV_VALUE
 #define WB32_PLLDIV_VALUE 2
 

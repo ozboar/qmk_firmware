@@ -24,6 +24,10 @@ kb_config_t kb_config_load(void);
 void        kb_config_save(void);
 
 void kb_led_power(bool on);
+bool kb_led_powered(void);
+
+/* An LED frame is still being sent */
+bool ws2812_busy(void);
 
 /* Powers the LEDs only while something can light them */
 void kb_led_update(void);
