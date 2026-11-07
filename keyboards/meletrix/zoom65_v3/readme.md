@@ -39,6 +39,8 @@ The driver lives in `wireless/` and plugs into QMK as a custom Bluetooth driver.
 
 On battery in a wireless mode, 1 minute without input turns the RGB off and dims the screen to a quarter. Any input restores them. The keyboard goes to sleep after 3 minutes without input, or after pairing or reconnecting times out, and a key press or turning the knob wakes it. With the cable connected it stays awake.
 
+On battery at 10% or below, the number row pulses red every 30 seconds while RGB is on, and the custom screen firmware shows a red battery icon. Both stop when the cable is connected, and the pulse does not turn the LEDs back on when they are off.
+
 The custom screen firmware follows the RGB brightness setting, down to a 5% floor, and its MCU sleeps along with the keyboard. The LED power stays off whenever RGB is off, in any mode.
 
 ## Custom screen firmware

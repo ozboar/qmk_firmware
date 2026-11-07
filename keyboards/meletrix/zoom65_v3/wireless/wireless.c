@@ -34,6 +34,10 @@
 #define BATTERY_BAR_FIRST_LED 1
 #define BATTERY_GOOD_PERCENT 50
 #define BATTERY_LOW_PERCENT 30
+#define BATTERY_BAR_LEDS 10
+#define BATTERY_WARN_PERCENT 10
+#define BATTERY_WARN_PERIOD_MS 30000
+#define BATTERY_WARN_PULSE_MS 1000
 
 typedef enum {
     LINK_IDLE,
@@ -417,6 +421,15 @@ void wireless_indicators(uint8_t led_min, uint8_t led_max) {
         }
         for (uint8_t i = 0; i < percent / 10; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(BATTERY_BAR_FIRST_LED + i, red, green, 0);
+        }
+    } else if (!kb_cable_connected() && module_battery() <= BATTERY_WARN_PERCENT) {
+        const uint32_t now = timer_read32() % BATTERY_WARN_PERIOD_MS;
+        if (now < BATTERY_WARN_PULSE_MS) {
+            const uint32_t ramp = now < BATTERY_WARN_PULSE_MS / 2 ? now : BATTERY_WARN_PULSE_MS - now;
+            const uint8_t  red  = ramp * 2 * RGB_MATRIX_MAXIMUM_BRIGHTNESS / BATTERY_WARN_PULSE_MS;
+            for (uint8_t i = 0; i < BATTERY_BAR_LEDS; i++) {
+                RGB_MATRIX_INDICATOR_SET_COLOR(BATTERY_BAR_FIRST_LED + i, red, 0, 0);
+            }
         }
     }
 
