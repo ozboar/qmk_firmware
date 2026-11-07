@@ -37,6 +37,8 @@ Their order matches the stock firmware, so stock VIA definitions still line up.
 
 The driver lives in `wireless/` and plugs into QMK as a custom Bluetooth driver. Raw HID also goes over the 2.4 GHz link, so VIA and `zoom-sync` can reach the keyboard through the dongle.
 
+To pair the 2.4 GHz receiver, hold `WL_2G4` until its key blinks fast, then unplug the receiver and plug it back in while the key is still blinking. The receiver keeps its generic `2.4G Dongle` name once paired, and Bluetooth pairings are kept.
+
 On battery in a wireless mode, 1 minute without input turns the RGB off and dims the screen to a quarter. Any input restores them. The keyboard goes to sleep after 3 minutes without input, or after pairing or reconnecting times out, and a key press or turning the knob wakes it. With the cable connected it stays awake.
 
 On battery at 10% or below, the number row pulses red every 30 seconds while RGB is on, and the custom screen firmware shows a red battery icon. Both stop when the cable is connected, and the pulse does not turn the LEDs back on when they are off.
