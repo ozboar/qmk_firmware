@@ -12,6 +12,8 @@
 #define NAME_MAX 18
 
 #define ACK_TIMEOUT_MS 6
+/* The module does not acknowledge raw frames in time, and every resend reaches the host as another report */
+#define RAW_ACK_TIMEOUT_MS 30
 #define QUEUE_WAIT_MS 500
 #define RAW_RX_TIMEOUT_MS 50
 #define SEND_ATTEMPTS 4
@@ -24,8 +26,7 @@
 #define TX_CONTROL 0xA6
 #define TX_MOUSE 0xA8
 #define TX_NAME 0xA9
-#define TX_RAW 0xAF
-#define TX_RAW_DIRECTION 0x61
+#define TX_RAW 0x91
 
 /* Frames from the module */
 #define RX_LEDS 0x5A
@@ -33,8 +34,7 @@
 #define RX_BATTERY 0x5C
 #define RX_VERSION 0x5D
 #define RX_HOST_STATE 0x60
-#define RX_RAW 0xAF
-#define RX_RAW_DIRECTION 0x60
+#define RX_RAW 0x81
 
 /* Second byte of an RX_EVENT frame */
 #define EVENT_BATTERY_LOW 0x21
@@ -144,7 +144,7 @@ static void retry_current(void) {
     if (!awaiting_ack) {
         return;
     }
-    if (++send_attempts >= SEND_ATTEMPTS) {
+    if (++send_attempts >= SEND_ATTEMPTS || queue[queue_head].data[0] == TX_RAW) {
         finish_current();
     } else {
         awaiting_ack = false;
@@ -237,6 +237,14 @@ static void rx_byte(uint8_t byte) {
         raw_rx_byte(byte);
         return;
     }
+    /* A raw frame has no length byte, so it can only start between frames */
+    if (byte == RX_RAW && window_fill == 0) {
+        raw_rx_pos    = 0;
+        raw_rx_sum    = byte;
+        raw_rx_timer  = timer_read32();
+        raw_rx_active = true;
+        return;
+    }
 #endif
 
     if (window_fill == sizeof(window)) {
@@ -254,17 +262,6 @@ static void rx_byte(uint8_t byte) {
         finish_current();
         return;
     }
-
-#ifdef RAW_ENABLE
-    if (window[0] == RX_RAW && window[1] == RX_RAW_DIRECTION && window[2] == MODULE_RAW_LEN) {
-        window_fill   = 0;
-        raw_rx_pos    = 0;
-        raw_rx_sum    = checksum(window, sizeof(window));
-        raw_rx_timer  = timer_read32();
-        raw_rx_active = true;
-        return;
-    }
-#endif
 
     if (is_frame_type(window[0]) && window[2] == (uint8_t)(window[0] + window[1])) {
         window_fill = 0;
@@ -294,7 +291,7 @@ static void pump(void) {
     }
 #endif
 
-    if (awaiting_ack && timer_elapsed32(send_timer) >= ACK_TIMEOUT_MS) {
+    if (awaiting_ack && timer_elapsed32(send_timer) >= (queue[queue_head].data[0] == TX_RAW ? RAW_ACK_TIMEOUT_MS : ACK_TIMEOUT_MS)) {
         retry_current();
     }
     send_next();
@@ -344,9 +341,7 @@ bool module_send_name(const char *name) {
 }
 
 bool module_send_raw(const uint8_t *data) {
-    uint8_t payload[MODULE_RAW_LEN + 2] = {TX_RAW_DIRECTION, MODULE_RAW_LEN};
-    memcpy(payload + 2, data, MODULE_RAW_LEN);
-    return enqueue(TX_RAW, payload, sizeof(payload));
+    return enqueue(TX_RAW, data, MODULE_RAW_LEN);
 }
 
 void module_reset_link(void) {
