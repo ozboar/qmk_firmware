@@ -43,7 +43,7 @@ On battery in a wireless mode, 1 minute without input turns the RGB off and dims
 
 On battery at 10% or below, the number row pulses red every 30 seconds while RGB is on, and the custom screen firmware shows a red battery icon. Both stop when the cable is connected, and the pulse does not turn the LEDs back on when they are off.
 
-The custom screen firmware follows the RGB brightness setting, down to a 5% floor, and its MCU sleeps along with the keyboard. The LED power stays off whenever RGB is off, in any mode.
+The custom screen firmware follows the RGB brightness setting, down to a 5% floor, and its MCU sleeps along with the keyboard. The LED power stays off whenever RGB is off, in any mode. Pressing an RGB key shows its RGB page for 800 ms, then it returns to the page it was on.
 
 ## Custom screen firmware
 

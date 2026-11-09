@@ -18,6 +18,9 @@ bool    lcdfw_asleep(void);
 void    lcdfw_set_dim(bool on);
 void    lcdfw_on_keypress(uint8_t row, uint8_t col);
 void    lcdfw_toggle_backlight(void);
+
+/* Shows the RGB page briefly, then the screen returns to the current mode */
+void    lcdfw_show_rgb(void);
 uint8_t lcdfw_next_mode(void);
 uint8_t lcdfw_prev_mode(void);
 

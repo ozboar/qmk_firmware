@@ -33,6 +33,7 @@
 #define MODE_GRAPH 3
 #define MODE_SYSTEM 4
 #define MODE_WEATHER 5
+#define MODE_RGB 6
 #define MODE_MEDIA 1
 #define MODE_INFO 7
 #define CLOCK_FACE_COUNT 4
@@ -66,6 +67,7 @@ enum {
     UI_MEDIA = 0x12,
     UI_BRIGHTNESS = 0x13,
     UI_WAKE = 0x14,
+    UI_PEEK = 0x15,
 };
 
 static uint8_t      mode;
@@ -390,6 +392,10 @@ void lcdfw_on_keypress(uint8_t row, uint8_t col) {
 void lcdfw_toggle_backlight(void) {
     backlight = !backlight;
     send_u8(UI_BACKLIGHT, backlight);
+}
+
+void lcdfw_show_rgb(void) {
+    send_u8(UI_PEEK, MODE_RGB);
 }
 
 uint8_t lcdfw_next_mode(void) {

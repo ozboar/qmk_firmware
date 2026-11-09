@@ -148,6 +148,9 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 #ifdef LCDFW_ENABLE
     if (pressed) {
         lcdfw_on_keypress(record->event.key.row, record->event.key.col);
+        if (IS_UNDERGLOW_KEYCODE(keycode) || IS_RGB_MATRIX_KEYCODE(keycode)) {
+            lcdfw_show_rgb();
+        }
     }
 #endif
     if (!process_record_user(keycode, record)) {
