@@ -5,7 +5,7 @@
     "usb": {
         "vid": "0x36B5",
         "pid": "0x287F",
-        "device_version": "0.8.5",
+        "device_version": "0.8.6",
         "suspend_wakeup_delay": 400
     },
     "host": {"default": {"nkro": true}},
