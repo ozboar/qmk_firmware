@@ -243,7 +243,8 @@ bool via_command_kb(uint8_t *data, uint8_t length) {
 void via_custom_value_command_kb(uint8_t *data, uint8_t length) {
     uint8_t *const command = &data[0];
 
-    if (data[1] != id_custom_channel || data[2] != VIA_VALUE_CUSTOM_SCREEN) {
+    /* Save only names the channel, while set and get also name the value */
+    if (data[1] != id_custom_channel || (*command != id_custom_save && data[2] != VIA_VALUE_CUSTOM_SCREEN)) {
         *command = id_unhandled;
         return;
     }
