@@ -42,6 +42,7 @@ static const wb32_dma_stream_t *stream;
 static volatile uint8_t         current_block;
 static volatile bool            active;
 static uint32_t                 transfer_timer;
+static uint32_t                 flushes;
 
 static const GPTConfig gpt_config = {
     .frequency = CPU_CLOCK,
@@ -144,8 +145,13 @@ bool ws2812_busy(void) {
     return active;
 }
 
+uint32_t ws2812_flushes(void) {
+    return flushes;
+}
+
 /* A frame still sending is left to finish, and the next flush carries the newer colors */
 void ws2812_flush(void) {
+    flushes++;
     if (stream == NULL) {
         return;
     }

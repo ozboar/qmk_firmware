@@ -159,6 +159,19 @@ void screen_task(void) {
 #endif
 }
 
+bool screen_busy(void) {
+#ifdef LCDFW_ENABLE
+    if (screen_custom_enabled() && lcdfw_busy()) {
+        return true;
+    }
+#endif
+#ifdef RAW_ENABLE
+    return reply_pending;
+#else
+    return false;
+#endif
+}
+
 void screen_set_power(bool on) {
 #ifdef LCDFW_ENABLE
     if (screen_custom_enabled()) {

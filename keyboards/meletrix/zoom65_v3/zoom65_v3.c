@@ -9,12 +9,14 @@
 #include "wireless/wireless.h"
 #include "wireless/sleep.h"
 #include "screen/screen.h"
+#include "idle.h"
 #ifdef LCDFW_ENABLE
 #    include "lcdfw/lcdfw.h"
 #endif
 
 #define SCREEN_HOST_REPORT_ID 0x58
 #define SCREEN_HOST_FRAME_MAX 30
+#define IDLE_STATS_REPORT_ID 0x59
 #define USB_REMOTE_WAKEUP_ENABLED 2U
 #define VIA_VALUE_CUSTOM_SCREEN 1
 
@@ -140,6 +142,7 @@ void housekeeping_task_kb(void) {
     usb_suspend_task();
     kb_led_update();
     housekeeping_task_user();
+    idle_task();
 }
 
 bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
@@ -226,6 +229,13 @@ bool via_command_kb(uint8_t *data, uint8_t length) {
         screen_host_command(data + 2, data[1]);
         return true;
     }
+#    ifdef IDLE_STATS_ENABLE
+    if (data[0] == IDLE_STATS_REPORT_ID) {
+        idle_stats_report(data, length);
+        raw_hid_send(data, length);
+        return true;
+    }
+#    endif
     return false;
 }
 

@@ -4,25 +4,21 @@
 #include "sleep.h"
 #include "wireless.h"
 #include "screen/screen.h"
+#include "idle.h"
 
 #define IDLE_DIM_MS 60000
 #define IDLE_TIMEOUT_MS 180000
 #define STOP_DELAY_MS 100
 
 #define EXTI_ALL_LINES 0x7FFFF
-#define EXTI_IRQ_PRIORITY 6
 #define NVIC_REGISTERS 8
 
 extern void __early_init(void);
-extern void matrix_init_pins(void);
 extern void last_matrix_activity_trigger(void);
 
 /* Vendor machine code that switches the regulator around stop mode, the same as stock firmware */
 static const uint32_t stop_enter_code[] = {553863175u, 554459777u, 1208378049u, 4026624001u, 688390415u, 554227969u, 3204472833u, 1198571264u, 1073807360u, 1073808388u};
 static const uint32_t stop_exit_code[]  = {553863177u, 554459777u, 1208509121u, 51443856u, 4026550535u, 1745485839u, 3489677954u, 536895496u, 673389632u, 1198578684u, 1073807360u, 536866816u, 1073808388u};
-
-static const pin_t col_pins[] = MATRIX_COL_PINS;
-static const pin_t row_pins[] = MATRIX_ROW_PINS;
 
 static bool     lights_off;
 static bool     dimmed;
@@ -62,56 +58,9 @@ static void set_lights(bool on) {
     kb_led_update();
 }
 
-static void arm_wake_pin(pin_t pin, bool both_edges) {
-    const uint32_t pad  = PAL_PAD(pin);
-    const uint32_t bit  = 1u << pad;
-    const uint32_t port = ((uint32_t)PAL_PORT(pin) & 0x3FFF) >> 10;
-
-    gpio_set_pin_input_high(pin);
-    AFIO->EXTICR[pad >> 2] = (AFIO->EXTICR[pad >> 2] & ~(0xFu << ((pad & 3) * 4))) | (port << ((pad & 3) * 4));
-    if (both_edges) {
-        EXTI->RTSR |= bit;
-    } else {
-        EXTI->RTSR &= ~bit;
-    }
-    EXTI->FTSR |= bit;
-    EXTI->PR = bit;
-    EXTI->IMR |= bit;
-    EXTI->EMR &= ~bit;
-}
-
-static void prepare_wake_pins(void) {
-    rccEnableEXTI();
-
-    for (uint8_t i = 0; i < ARRAY_SIZE(col_pins); i++) {
-        gpio_set_pin_output_open_drain(col_pins[i]);
-        gpio_write_pin_low(col_pins[i]);
-    }
-
-    /* Only a press wakes it, so a release does not cost another idle timeout */
-    for (uint8_t i = 0; i < ARRAY_SIZE(row_pins); i++) {
-        arm_wake_pin(row_pins[i], false);
-    }
-    /* The knob can rest at either level, so any step changes this pin one way or the other */
-    arm_wake_pin(ENCODER_WAKE_PIN, true);
-
-    nvicEnableVector(EXTI9_5_IRQn, EXTI_IRQ_PRIORITY);
-    nvicEnableVector(EXTI15_10_IRQn, EXTI_IRQ_PRIORITY);
-}
-
-static void release_wake_pins(void) {
-    for (uint8_t i = 0; i < ARRAY_SIZE(row_pins); i++) {
-        EXTI->IMR &= ~(1u << PAL_PAD(row_pins[i]));
-    }
-    EXTI->IMR &= ~(1u << PAL_PAD(ENCODER_WAKE_PIN));
-    EXTI->PR = EXTI_ALL_LINES;
-    nvicDisableVector(EXTI9_5_IRQn);
-    nvicDisableVector(EXTI15_10_IRQn);
-}
-
 static void stop_mcu(void) {
     chSysDisable();
-    prepare_wake_pins();
+    idle_arm_wake_pins();
 
     SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
 
@@ -142,8 +91,7 @@ static void stop_mcu(void) {
     rccEnableTIM3();
     rccEnableDMAC1();
 
-    release_wake_pins();
-    matrix_init_pins();
+    idle_release_wake_pins();
     chSysEnable();
 }
 

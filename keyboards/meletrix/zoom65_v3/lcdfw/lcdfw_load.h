@@ -18,6 +18,9 @@ void lcdfw_load_stop(void);
 /* True once the screen firmware is running */
 bool lcdfw_load_done(void);
 
+/* True while a load is in progress */
+bool lcdfw_load_busy(void);
+
 /* True while loading has UART3 or the screen's reset line */
 bool lcdfw_load_owns_uart(void);
 

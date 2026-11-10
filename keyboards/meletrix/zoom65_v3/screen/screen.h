@@ -7,6 +7,9 @@
 void screen_init(void);
 void screen_task(void);
 
+/* Loading the firmware, waking the screen or waiting on a reply for the host */
+bool screen_busy(void);
+
 /* Screen power for idle and suspend. Stays off if the user turned the screen off */
 void screen_set_power(bool on);
 

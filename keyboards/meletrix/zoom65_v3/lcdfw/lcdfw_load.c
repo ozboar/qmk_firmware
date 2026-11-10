@@ -245,6 +245,10 @@ bool lcdfw_load_done(void) {
     return loaded;
 }
 
+bool lcdfw_load_busy(void) {
+    return step != STEP_DONE;
+}
+
 bool lcdfw_load_task(void) {
     switch (step) {
         case STEP_START:

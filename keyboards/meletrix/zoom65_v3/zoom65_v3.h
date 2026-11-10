@@ -29,6 +29,9 @@ bool kb_led_powered(void);
 /* An LED frame is still being sent */
 bool ws2812_busy(void);
 
+/* Counts the frames rgb_matrix has handed over, sent or not */
+uint32_t ws2812_flushes(void);
+
 /* Powers the LEDs only while something can light them */
 void kb_led_update(void);
 bool kb_cable_connected(void);

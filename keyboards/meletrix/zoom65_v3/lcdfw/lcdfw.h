@@ -14,6 +14,9 @@ void    lcdfw_set_power(bool on);
 /* True while the screen is off or still waking, when it takes no frames */
 bool    lcdfw_asleep(void);
 
+/* Loading, waking, or about to send the first state */
+bool    lcdfw_busy(void);
+
 /* Lowers the backlight for idle */
 void    lcdfw_set_dim(bool on);
 void    lcdfw_on_keypress(uint8_t row, uint8_t col);

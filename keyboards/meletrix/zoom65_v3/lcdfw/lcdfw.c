@@ -270,6 +270,10 @@ void lcdfw_stop(void) {
     lcdfw_load_stop();
 }
 
+bool lcdfw_busy(void) {
+    return enabled && (lcdfw_load_busy() || waking || (!state_sent && lcdfw_load_done()));
+}
+
 /* The first frames are lost while the screen restarts its clocks, so keep asking */
 static void wake_task(void) {
     msg_t byte;
