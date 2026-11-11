@@ -62,8 +62,6 @@ static void stop_mcu(void) {
     chSysDisable();
     idle_arm_wake_pins();
 
-    SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
-
     /* The chip will not stop with anything pending */
     EXTI->PR = EXTI_ALL_LINES;
     for (uint8_t i = 0; i < NVIC_REGISTERS; i++) {
@@ -81,10 +79,9 @@ static void stop_mcu(void) {
     run_code(stop_exit_code);
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
 
-    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
-
     __early_init();
     rccEnableEXTI();
+    rccEnableTIM2();
     rccEnableUART1();
     rccEnableUART3();
     rccEnableQSPI();
